@@ -13,8 +13,8 @@ export const ScreenInsert: React.FC<FxProps<OverlayOf<"screen">>> = ({ o, total,
   const inT = enter(f, 0, 14);
   const out = exit(f, total, 8);
 
-  const maxH = zone.h - 120;
-  const w = isWindow ? Math.min(zone.w - 60, 1000) : Math.min(560, maxH * 0.5);
+  const maxH = zone.h - 70;
+  const w = isWindow ? Math.min(zone.w - 60, 1000) : Math.min(600, maxH * 0.52);
   const h = isWindow ? w * 0.68 : Math.min(maxH, w * 2.05);
 
   const z = o.zoomTo;
