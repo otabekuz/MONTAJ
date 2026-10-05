@@ -1,4 +1,4 @@
-import { interpolate, useCurrentFrame, useVideoConfig } from "remotion";
+import { Img, interpolate, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import type { OverlayOf } from "../schema";
 import { FONT } from "../theme";
 import { EASE_OUT, enter, exit, pop } from "../motion";
@@ -35,7 +35,7 @@ export const Notify: React.FC<FxProps<OverlayOf<"notify">>> = ({ o, total, zone,
           {/* новая квартира */}
           <div style={{ position: "absolute", left: "50%", top: H * 0.56, width: W * 0.8, transform: `translate(-50%, -50%) scale(${hero * heroShrink})`, borderRadius: 26, overflow: "hidden", boxShadow: `0 0 0 3px ${p.accent}, 0 30px 70px rgba(0,0,0,0.6), 0 0 60px ${p.accentSoft}` }}>
             <div style={{ height: W * 0.6 }}>
-              <LuxuryArt variant={4} />
+              {o.heroImage ? <Img src={staticFile(o.heroImage)} style={{ width: "100%", height: "100%", objectFit: "cover" }} /> : <LuxuryArt variant={4} />}
             </div>
             <div style={{ position: "absolute", top: 14, left: 14, padding: "8px 16px", borderRadius: 999, background: p.accent, color: p.onAccent, fontFamily: FONT, fontWeight: 900, fontSize: W * 0.045, letterSpacing: 2 }}>{o.heroLabel ?? "НОВЫЙ"}</div>
           </div>
@@ -57,7 +57,7 @@ export const Notify: React.FC<FxProps<OverlayOf<"notify">>> = ({ o, total, zone,
                   <div style={{ fontSize: W * 0.036, color: "#333", marginTop: 2 }}>{it.text}</div>
                 </div>
                 <div style={{ width: W * 0.13, height: W * 0.13, borderRadius: W * 0.025, overflow: "hidden", flexShrink: 0, opacity: interpolate(f, [at + 6, at + 12], [0, 1], clamp) }}>
-                  <LuxuryArt variant={i + 2} />
+                  {o.heroImage ? <Img src={staticFile(o.heroImage)} style={{ width: "100%", height: "100%", objectFit: "cover" }} /> : <LuxuryArt variant={i + 2} />}
                 </div>
               </div>
             );

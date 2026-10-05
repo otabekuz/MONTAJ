@@ -41,6 +41,14 @@
       "type": "smear"
     },
     {
+      "at": 16.66,
+      "type": "flash"
+    },
+    {
+      "at": 19.98,
+      "type": "smear"
+    },
+    {
       "at": 24.08,
       "type": "smear"
     },
@@ -75,7 +83,7 @@
     {
       "type": "tg",
       "at": 6.62,
-      "dur": 13.33,
+      "dur": 10.0,
       "mode": "chat",
       "title": "BekEstateUyBot",
       "sub": "бот",
@@ -90,48 +98,49 @@
           "at": 11.0,
           "typeDur": 5.1,
           "text": "Трёхкомнатная квартира в Мирабадском районе, до 200 тысяч долларов, с новым ремонтом"
-        },
-        {
-          "from": "bot",
-          "at": 16.95,
-          "text": "Понял запрос:",
-          "chips": [
-            {
-              "text": "3 комнаты",
-              "icon": "rooms",
-              "at": 17.25
-            },
-            {
-              "text": "Мирабад",
-              "icon": "location",
-              "at": 17.75
-            },
-            {
-              "text": "до $200 000",
-              "icon": "price",
-              "at": 18.25
-            },
-            {
-              "text": "Новый ремонт",
-              "icon": "repair",
-              "at": 18.75
-            }
-          ]
         }
       ]
     },
     {
       "type": "screen",
-      "at": 19.97,
-      "dur": 3.5,
+      "at": 16.68,
+      "dur": 3.3,
       "title": "Настоящий бот · BekEstateUyBot",
-      "image": "reels/bek-estate-bot/bot-search.png",
+      "image": "reels/bek-estate-bot/tg-result.jpg",
       "frame": "phone",
       "zoomTo": {
         "x": 0.03,
-        "y": 0.245,
-        "w": 0.46,
-        "h": 0.12
+        "y": 0.29,
+        "w": 0.6,
+        "h": 0.22
+      }
+    },
+    {
+      "type": "screen",
+      "at": 20.0,
+      "dur": 1.83,
+      "title": "Подобранные объекты",
+      "image": "reels/bek-estate-bot/tg-listing.jpg",
+      "frame": "phone",
+      "zoomTo": {
+        "x": 0.03,
+        "y": 0.65,
+        "w": 0.6,
+        "h": 0.14
+      }
+    },
+    {
+      "type": "screen",
+      "at": 21.85,
+      "dur": 1.62,
+      "title": "Требования сохранены",
+      "image": "reels/bek-estate-bot/tg-saved.jpg",
+      "frame": "phone",
+      "zoomTo": {
+        "x": 0.02,
+        "y": 0.735,
+        "w": 0.56,
+        "h": 0.165
       }
     },
     {
@@ -165,7 +174,8 @@
           "title": "BekEstateUyBot",
           "text": "Подходит под ваш запрос"
         }
-      ]
+      ],
+      "heroImage": "reels/bek-estate-bot/new-object.jpg"
     },
     {
       "type": "screen",

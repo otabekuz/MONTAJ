@@ -14,17 +14,23 @@ export const ScreenInsert: React.FC<FxProps<OverlayOf<"screen">>> = ({ o, total,
   const out = exit(f, total, 8);
 
   const maxH = zone.h - 70;
-  const w = isWindow ? Math.min(zone.w - 60, 1000) : Math.min(600, maxH * 0.52);
-  const h = isWindow ? w * 0.68 : Math.min(maxH, w * 2.05);
+  // телефон — в пропорциях скриншота iPhone (9 : 19,5), чтобы скриншот входил целиком и zoomTo совпадал с картинкой
+  const w = isWindow ? Math.min(zone.w - 60, 1000) : Math.min(600, maxH * 0.462);
+  const h = isWindow ? w * 0.68 : Math.min(maxH, w * 2.165);
 
   const z = o.zoomTo;
-  const zt = z ? interpolate(f, [fps, fps + 0.6 * fps], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: EASE_IN_OUT }) : 0;
+  // наезд через ~1 с, а у коротких кадров — раньше (на 25% длительности), чтобы успел случиться
+  const z0 = Math.min(fps, Math.round(total * 0.25));
+  const zt = z ? interpolate(f, [z0, z0 + 0.5 * fps], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: EASE_IN_OUT }) : 0;
   const scale = z ? 1 + zt * (Math.min(1 / z.w, 1 / z.h) * 0.75 - 1) : 1;
   const cx = z ? z.x + z.w / 2 : 0.5;
   const cy = z ? z.y + z.h / 2 : 0.5;
-  const tx = (0.5 - cx) * w * zt * scale;
-  const ty = (0.5 - cy) * h * zt * scale;
-  const frameT = enter(f, fps + 0.6 * fps, 10);
+  // сдвиг не больше, чем позволяет увеличение — иначе за краем скриншота открывается пустота
+  const lim = (len: number) => ((scale - 1) * len) / 2;
+  const clampTo = (v: number, m: number) => Math.max(-m, Math.min(m, v));
+  const tx = clampTo((0.5 - cx) * w * zt * scale, lim(w));
+  const ty = clampTo((0.5 - cy) * h * zt * scale, lim(h));
+  const frameT = enter(f, z0 + 0.5 * fps, 10);
 
   return (
     <Center style={{ opacity: Math.min(inT, out) }}>
