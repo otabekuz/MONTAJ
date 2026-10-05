@@ -1,0 +1,50 @@
+{
+  "layout": "full",
+  "lang": "uz",
+  "palette": "sky",
+  "videoFile": "reels/narx-xatosi.mp4",
+  "captionsFile": "reels/narx-xatosi.captions.json",
+  "fallbackSeconds": 34,
+  "cutPauses": true,
+  "speed": 1.1,
+  "beats": [],
+  "cues": [{ "at": 24.6, "sound": "riser", "volume": 0.32 }],
+  "hook": "Kvartira sotilmayaptimi?",
+  "hookSeconds": 2.4,
+  "highlightWords": ["emas", "bir", "xil", "e'londa", "ajralib", "UY"],
+  "autoFraming": true,
+  "zooms": [{ "at": 24.7, "dur": 1.2, "scale": 1.15 }],
+  "transitions": [
+    { "at": 6.1, "type": "smear" },
+    { "at": 15.8, "type": "flash" },
+    { "at": 24.5, "type": "smear" }
+  ],
+  "overlays": [
+    { "type": "typed", "at": 2.5, "dur": 2.2, "text": "Gap narxda emas", "em": "emas" },
+    {
+      "type": "clones",
+      "at": 6.2,
+      "dur": 6.8,
+      "labels": ["Qorong'i rasm", "Quruq matn", "Narx yo'q"],
+      "marks": [0.3, 0.55, 0.78]
+    },
+    { "type": "slam", "at": 15.9, "dur": 1.8, "text": "E'LON", "em": "muammo e'londa" },
+    {
+      "type": "paper",
+      "at": 18.2,
+      "dur": 4.6,
+      "tag": "E'LON",
+      "title": "to'g'ri",
+      "items": [
+        { "text": "Yorug' rasm", "mark": "v" },
+        { "text": "Aniq narx", "mark": "v" },
+        { "text": "Joylashuv", "mark": "v" }
+      ]
+    },
+    { "type": "morph", "at": 25.0, "dur": 5.0, "before": "oddiy e'lon", "after": "ajralib turadi" }
+  ],
+  "sfx": true,
+  "musicFile": "",
+  "cta": "Izohga UY deb yozing",
+  "ctaSeconds": 2.8
+}

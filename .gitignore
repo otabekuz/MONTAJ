@@ -5,3 +5,21 @@ dist
 
 # Ignore the output video from Git but not videos you import into src/.
 out
+
+# Исходники роликов и результат — не в git (тяжёлые). Субтитры (*.captions.json) и планы — в git.
+public/reels/**/*.mp4
+public/reels/**/*.mov
+public/reels/**/*.mp3
+public/reels/**/*.wav
+public/reels/**/*.m4a
+public/reels/**/*.tmp.*
+public/music/*
+!public/music/.gitkeep
+# whisper.cpp и модель распознавания (~1,5 ГБ) — ставятся командой npm run transcribe
+whisper.cpp/
+dist/
+# модель вырезки и её WASM (качаются/копируются командой npm run matte), прозрачные вырезки и кадры
+public/models/
+public/mediapipe/
+public/reels/**/*.webm
+public/reels/*/frames/
