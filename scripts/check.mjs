@@ -2,6 +2,7 @@
 // Рендерит несколько кадров для проверки за одну сборку проекта (быстрее, чем remotion still по одному).
 //   npm run check -- kvartira-yunusobod 30 95 4.5s
 //   npm run check -- ReelDemoSplit 60 200 400
+//   npm run check -- kvartira-yunusobod @10.2 @31.5       (@ — секунды ИСХОДНИКА, как в edit.json)
 //   npm run check -- ReelDemo 60 --palette=champagne     (сравнить палитры)
 // Результат: out/<slug>-check-<кадр>.png (уменьшенные вдвое).
 import fs from "node:fs";
@@ -30,10 +31,25 @@ const composition = await selectComposition({ serveUrl, id: compositionId, input
 console.log(`${compositionId}: ${(composition.durationInFrames / composition.fps).toFixed(1)} с, ${composition.durationInFrames} кадров`);
 
 fs.mkdirSync("out", { recursive: true });
+// секунда исходника → кадр результата (та же логика, что в src/Reel/cuts.ts)
+const sourceToFrame = (t) => {
+  const { segments = [], speed = 1 } = composition.props;
+  let acc = 0;
+  for (const s of segments) {
+    if (t < s.from) break;
+    if (t <= s.to) return Math.round((acc + (t - s.from) / speed) * composition.fps);
+    acc += (s.to - s.from) / speed;
+  }
+  return Math.round(acc * composition.fps);
+};
 for (const arg of frameArgs) {
   const frame = Math.min(
     composition.durationInFrames - 1,
-    arg.endsWith("s") ? Math.round(parseFloat(arg) * composition.fps) : parseInt(arg, 10),
+    arg.startsWith("@")
+      ? sourceToFrame(parseFloat(arg.slice(1)))
+      : arg.endsWith("s")
+        ? Math.round(parseFloat(arg) * composition.fps)
+        : parseInt(arg, 10),
   );
   const output = path.join("out", `${target}-check-${palette ? `${palette}-` : ""}${frame}.png`);
   await renderStill({ serveUrl, composition, frame, output, inputProps, scale: 0.5, ...browserOptions() });

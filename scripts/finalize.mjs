@@ -9,7 +9,11 @@ export const finalize = async (file) => {
   const json = pass1.slice(pass1.lastIndexOf("{"), pass1.lastIndexOf("}") + 1);
   const m = JSON.parse(json);
   const tmp = file.replace(/\.mp4$/, ".loud.tmp.mp4");
-  const filter = `loudnorm=I=-14:TP=-1.5:LRA=11:measured_I=${m.input_i}:measured_TP=${m.input_tp}:measured_LRA=${m.input_lra}:measured_thresh=${m.input_thresh}:offset=${m.target_offset}:linear=true`;
+  // линейный режим (без «дыхания» громкости) — только если после усиления пик останется ниже −2 dBTP;
+  // иначе динамический режим, он сам удерживает пики
+  const linear = Number(m.input_tp) + (-14 - Number(m.input_i)) <= -2.2;
+  // TP с запасом: кодирование в AAC добавляет ~0,4 дБ к пикам
+  const filter = `loudnorm=I=-14:TP=-2:LRA=11:measured_I=${m.input_i}:measured_TP=${m.input_tp}:measured_LRA=${m.input_lra}:measured_thresh=${m.input_thresh}:offset=${m.target_offset}:linear=${linear}`;
   try {
     await runFf(["-y", "-hide_banner", "-i", file, "-c:v", "copy", "-af", filter, "-ar", "48000", "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart", tmp]);
     fs.renameSync(tmp, file);

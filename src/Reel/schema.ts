@@ -1,5 +1,6 @@
 import { z } from "zod";
 import type { Caption } from "@remotion/captions";
+import { DISTRICT_IDS } from "./fx/tashkent";
 
 // Все времена — в секундах исходного видео (до вырезки пауз, её делаем автоматически).
 const base = { at: z.number().min(0), dur: z.number().min(0.3) };
@@ -77,6 +78,8 @@ export const overlaySchema = z.discriminatedUnion("type", [
     tag: z.string(),
     title: z.string(),
     items: z.array(z.object({ text: z.string(), mark: z.enum(["x", "v", ""]) })).min(1).max(5),
+    // секунды исходника, когда появляется каждый пункт (по словам); без них — каждые 0,9 с
+    times: z.array(z.number().min(0)).optional(),
   }),
   // Три одинаковых типовых объявления — «все на одно лицо» (герой роликов про продажу)
   // marks — когда появляется подпись каждой копии (доля длительности 0..1), чтобы попасть в слова
@@ -88,8 +91,15 @@ export const overlaySchema = z.discriminatedUnion("type", [
   }),
   // Типовое объявление превращается в премиальное (линия-сканер)
   z.object({ type: z.literal("morph"), ...base, before: z.string(), after: z.string() }),
-  // Ядро + модули: к центральному узлу по очереди подключаются 2–4 модуля, по линиям бежит свет
-  z.object({ type: z.literal("hub"), ...base, center: z.string(), items: z.array(z.string()).min(1).max(4) }),
+  // Ядро + модули: к центральному узлу по очереди подключаются 2–5 модулей, по линиям бежит свет
+  // times — секунды исходника, когда подключается каждый модуль (по словам); без них — каждые 0,6 с
+  z.object({
+    type: z.literal("hub"),
+    ...base,
+    center: z.string(),
+    items: z.array(z.string()).min(1).max(5),
+    times: z.array(z.number().min(0)).optional(),
+  }),
   // График из столбиков — только реальные цифры
   z.object({
     type: z.literal("chart"),
@@ -113,6 +123,27 @@ export const overlaySchema = z.discriminatedUnion("type", [
   }),
   // Локация: на схематичной карте падает метка, подпись района/ориентира
   z.object({ type: z.literal("location"), ...base, place: z.string(), sub: z.string() }),
+  // Карта районов Ташкента (схема). focus пустой — «поиск» со сканером; иначе районы подсвечиваются по очереди:
+  // rank — номер в рейтинге, value — подпись «металлом» (только реальные цифры), zoom — наезд на районы,
+  // objects — на первом районе растут многоэтажки (towers) или частные дома (houses); title — плашка сверху.
+  z.object({
+    type: z.literal("districts"),
+    ...base,
+    focus: z
+      .array(
+        z.object({
+          id: z.enum(DISTRICT_IDS),
+          rank: z.number().int().min(1).max(12).optional(),
+          value: z.string().optional(),
+          // секунда исходника, когда район подсвечивается (по слову); по умолчанию — сразу, по очереди
+          at: z.number().min(0).optional(),
+        }),
+      )
+      .max(4),
+    zoom: z.boolean().optional(),
+    objects: z.enum(["towers", "houses", "none"]).optional(),
+    title: z.string().optional(),
+  }),
 ]);
 
 export const zoomSchema = z.object({

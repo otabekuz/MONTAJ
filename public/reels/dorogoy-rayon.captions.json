@@ -1,0 +1,863 @@
+[
+ {
+  "text": "Какой",
+  "startMs": 0,
+  "endMs": 339,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "район",
+  "startMs": 339,
+  "endMs": 678,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "Ташкента",
+  "startMs": 678,
+  "endMs": 1173,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "сегодня",
+  "startMs": 1173,
+  "endMs": 1616,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "считается",
+  "startMs": 1616,
+  "endMs": 2163,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "самым",
+  "startMs": 2163,
+  "endMs": 2502,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "дорогим",
+  "startMs": 2502,
+  "endMs": 2945,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "по",
+  "startMs": 2945,
+  "endMs": 3127,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "стоимости",
+  "startMs": 3127,
+  "endMs": 3674,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "недвижимости?",
+  "startMs": 3674,
+  "endMs": 4378,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "Если",
+  "startMs": 5916,
+  "endMs": 6207,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "говорить",
+  "startMs": 6207,
+  "endMs": 6710,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "о",
+  "startMs": 6710,
+  "endMs": 6843,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "квартирах,",
+  "startMs": 6843,
+  "endMs": 7399,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "лидером",
+  "startMs": 7399,
+  "endMs": 7849,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "по",
+  "startMs": 7849,
+  "endMs": 8035,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "средней",
+  "startMs": 8035,
+  "endMs": 8485,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "цене",
+  "startMs": 8485,
+  "endMs": 8777,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "квадратного",
+  "startMs": 8777,
+  "endMs": 9439,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "метра",
+  "startMs": 9439,
+  "endMs": 9783,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "является",
+  "startMs": 9783,
+  "endMs": 10287,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "Шайхантахурский",
+  "startMs": 10287,
+  "endMs": 11161,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "район.",
+  "startMs": 11161,
+  "endMs": 11505,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "Средняя",
+  "startMs": 12282,
+  "endMs": 12754,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "стоимость",
+  "startMs": 12754,
+  "endMs": 13338,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "здесь",
+  "startMs": 13338,
+  "endMs": 13699,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "составляет",
+  "startMs": 13699,
+  "endMs": 14338,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "около",
+  "startMs": 14338,
+  "endMs": 14699,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "2",
+  "startMs": 14699,
+  "endMs": 14838,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "100",
+  "startMs": 14838,
+  "endMs": 15088,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "долларов",
+  "startMs": 15088,
+  "endMs": 15616,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "за",
+  "startMs": 15616,
+  "endMs": 15810,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "квадратный",
+  "startMs": 15810,
+  "endMs": 16449,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "метр.",
+  "startMs": 16449,
+  "endMs": 16755,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "Высокая",
+  "startMs": 17679,
+  "endMs": 18118,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "цена",
+  "startMs": 18118,
+  "endMs": 18402,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "формируется",
+  "startMs": 18402,
+  "endMs": 19048,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "сразу",
+  "startMs": 19048,
+  "endMs": 19384,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "несколькими",
+  "startMs": 19384,
+  "endMs": 20030,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "факторами:",
+  "startMs": 20030,
+  "endMs": 20572,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "центральное",
+  "startMs": 21105,
+  "endMs": 21722,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "расположение,",
+  "startMs": 21722,
+  "endMs": 22387,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "развитая",
+  "startMs": 22633,
+  "endMs": 23152,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "инфраструктура,",
+  "startMs": 23152,
+  "endMs": 23998,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "высокая",
+  "startMs": 24323,
+  "endMs": 24797,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "деловая",
+  "startMs": 24797,
+  "endMs": 25271,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "активность,",
+  "startMs": 25271,
+  "endMs": 25912,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "ограниченное",
+  "startMs": 26222,
+  "endMs": 26974,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "предложение",
+  "startMs": 26974,
+  "endMs": 27670,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "качественных",
+  "startMs": 27670,
+  "endMs": 28422,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "объектов",
+  "startMs": 28422,
+  "endMs": 28951,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "и",
+  "startMs": 28951,
+  "endMs": 29091,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "устойчивый",
+  "startMs": 29091,
+  "endMs": 29731,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "спрос.",
+  "startMs": 29731,
+  "endMs": 30093,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "Следом",
+  "startMs": 30813,
+  "endMs": 31210,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "идут",
+  "startMs": 31210,
+  "endMs": 31500,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "Мирабадский",
+  "startMs": 31500,
+  "endMs": 32160,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "и",
+  "startMs": 32160,
+  "endMs": 32292,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "Яккасарайский",
+  "startMs": 32292,
+  "endMs": 33058,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "районы,",
+  "startMs": 33058,
+  "endMs": 33454,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "которые",
+  "startMs": 33814,
+  "endMs": 34267,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "также",
+  "startMs": 34267,
+  "endMs": 34614,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "стабильно",
+  "startMs": 34614,
+  "endMs": 35174,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "входят",
+  "startMs": 35174,
+  "endMs": 35574,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "в",
+  "startMs": 35574,
+  "endMs": 35707,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "число",
+  "startMs": 35707,
+  "endMs": 36053,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "самых",
+  "startMs": 36053,
+  "endMs": 36400,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "дорогих",
+  "startMs": 36400,
+  "endMs": 36853,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "локаций",
+  "startMs": 36853,
+  "endMs": 37307,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "столицы.",
+  "startMs": 37307,
+  "endMs": 37760,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "При",
+  "startMs": 39325,
+  "endMs": 39611,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "этом",
+  "startMs": 39611,
+  "endMs": 39959,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "рынок",
+  "startMs": 39959,
+  "endMs": 40371,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "частных",
+  "startMs": 40371,
+  "endMs": 40910,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "домов",
+  "startMs": 40910,
+  "endMs": 41322,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "выглядит",
+  "startMs": 41322,
+  "endMs": 41924,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "иначе.",
+  "startMs": 41924,
+  "endMs": 42336,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "В",
+  "startMs": 42980,
+  "endMs": 43095,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "сегменте",
+  "startMs": 43095,
+  "endMs": 43532,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "домов",
+  "startMs": 43532,
+  "endMs": 43831,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "и",
+  "startMs": 43831,
+  "endMs": 43946,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "земельных",
+  "startMs": 43946,
+  "endMs": 44429,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "участков",
+  "startMs": 44429,
+  "endMs": 44866,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "одни",
+  "startMs": 45263,
+  "endMs": 45565,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "из",
+  "startMs": 45565,
+  "endMs": 45757,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "самых",
+  "startMs": 45757,
+  "endMs": 46115,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "высоких",
+  "startMs": 46115,
+  "endMs": 46581,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "цен",
+  "startMs": 46581,
+  "endMs": 46829,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "традиционно",
+  "startMs": 46829,
+  "endMs": 47515,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "фиксируются",
+  "startMs": 47515,
+  "endMs": 48202,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "в",
+  "startMs": 48202,
+  "endMs": 48339,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "Мирзо-Улугбекском",
+  "startMs": 48339,
+  "endMs": 49301,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "районе.",
+  "startMs": 49301,
+  "endMs": 49713,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "Поэтому",
+  "startMs": 50796,
+  "endMs": 51225,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "при",
+  "startMs": 51225,
+  "endMs": 51452,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "оценке",
+  "startMs": 51452,
+  "endMs": 51831,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "недвижимости",
+  "startMs": 51831,
+  "endMs": 52512,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "важно",
+  "startMs": 52512,
+  "endMs": 52840,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "смотреть",
+  "startMs": 52840,
+  "endMs": 53320,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "не",
+  "startMs": 53320,
+  "endMs": 53496,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "только",
+  "startMs": 53496,
+  "endMs": 53875,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "на",
+  "startMs": 53875,
+  "endMs": 54051,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "район,",
+  "startMs": 54051,
+  "endMs": 54379,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "но",
+  "startMs": 54726,
+  "endMs": 54882,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "и",
+  "startMs": 54882,
+  "endMs": 54993,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "на",
+  "startMs": 54993,
+  "endMs": 55149,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "конкретный",
+  "startMs": 55149,
+  "endMs": 55660,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "сегмент:",
+  "startMs": 55660,
+  "endMs": 56039,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "квартира,",
+  "startMs": 56560,
+  "endMs": 57226,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "новостройка,",
+  "startMs": 57226,
+  "endMs": 58102,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "вторичный",
+  "startMs": 58349,
+  "endMs": 58849,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "рынок,",
+  "startMs": 58849,
+  "endMs": 59159,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "дом",
+  "startMs": 59364,
+  "endMs": 59608,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "или",
+  "startMs": 59608,
+  "endMs": 59853,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "земельный",
+  "startMs": 59853,
+  "endMs": 60423,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "участок.",
+  "startMs": 60423,
+  "endMs": 60884,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "Именно",
+  "startMs": 61546,
+  "endMs": 61958,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "от",
+  "startMs": 61958,
+  "endMs": 62150,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "этого",
+  "startMs": 62150,
+  "endMs": 62508,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "зависит",
+  "startMs": 62508,
+  "endMs": 62975,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "реальная",
+  "startMs": 62975,
+  "endMs": 63497,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "стоимость",
+  "startMs": 63497,
+  "endMs": 64073,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "объекта.",
+  "startMs": 64073,
+  "endMs": 64541,
+  "timestampMs": null,
+  "confidence": null
+ }
+]

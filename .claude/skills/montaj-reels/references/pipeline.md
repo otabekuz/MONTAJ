@@ -15,11 +15,12 @@
 |---|---|---|
 | `npm run ingest -- "<путь>" <slug>` | видео → `public/reels/<slug>.mp4`: 1080×1920, 30 к/с, ключевой кадр каждую секунду; аудио (mp3/wav/m4a) копирует как есть | видео с телефона и из генераторов аватара имеют нерегулярные ключевые кадры — без перекодирования рендер падает |
 | `npm run transcribe -- reels/<slug>.mp4 <uz\|ru>` | распознаёт речь (whisper.cpp, large-v3-turbo) → `public/reels/<slug>.captions.json` и сырой `<slug>.whisper.json` | точные тайминги слов; первый запуск ставит whisper.cpp и качает модель ~1,6 ГБ — запускать в фоне |
+| `npm run estimate-captions -- reels/<slug>` | субтитры **без распознавания**: точный текст из `script.md` раскладывается по паузам в голосе (паузы ↔ знаки препинания) | когда Whisper недоступен (облако) или голос синтезирован ровно (ElevenLabs); точность ~0,1–0,3 с на слово |
 | `npm run align -- reels/<slug>` | подставляет точный текст из `script.md` («Текст для генерации аватара» или «Текст для записи») на тайминги Whisper; кириллицу Whisper в узбекском ролике переводит в латиницу для сравнения | Whisper плохо пишет узбекские слова, но время знает точно; расхождение до ~25% — норма |
 | `npm run new-reel -- <slug> <full\|split\|voice> <uz\|ru> [палитра]` | заготовка `reels/<slug>/edit.json`; палитра по умолчанию — из `PROGRESS.md` | не писать шаблон руками |
-| `npm run check -- <slug> 2s 7.5s 120 …` | несколько кадров за одну сборку → `out/<slug>-check-<кадр>.png` (½ размера). Число — кадр, `Ns` — секунды **результата**. `--palette=…` — примерить палитру | увидеть каждый элемент до полного рендера |
+| `npm run check -- <slug> @10.2 @31.5 2s 120 …` | несколько кадров за одну сборку → `out/<slug>-check-<кадр>.png` (½ размера). `@N` — секунды **исходника** (как в плане), `Ns` — секунды результата, число — кадр. `--palette=…` — примерить палитру | увидеть каждый элемент до полного рендера |
 | `npm run build-reel -- <slug>` | рендер → громкость −14 LUFS → обложка; при сбое чтения кадров сам повторяет с 2 и 1 потоком; при ошибке удаляет файл | один надёжный шаг; печатает «Готово» только при успехе |
-| `npm run finalize -- out/<slug>.mp4` | только громкость (−14 LUFS, пик ≤ −1,5 dBTP) | если рендерили вручную |
+| `npm run finalize -- out/<slug>.mp4` | только громкость (−14 LUFS, пик ≤ −1,5 dBTP; линейно, а если пики не помещаются — динамически) | если рендерили вручную |
 | `npm run sfx` | пересобирает звуки в `public/sfx/` (синтез, без скачивания) | после изменения набора звуков |
 | `npm run pack-skill [-- --global]` | пересобирает справочники скилла из правил агентов и схемы, пакует `dist/montaj-reels.skill`; `--global` — копия в `~/.claude/skills/` | после любой правки правил в `.claude/agents/` или схемы |
 | `npm run dev` | Remotion Studio: `Reel` и демо (`ReelDemo`, `ReelDemoRu`, `ReelDemoSplit`, `ReelDemoVoice`) | посмотреть элементы и палитры вживую |
@@ -41,7 +42,7 @@
 |---|---|---|
 | `No frame found at position …` | видео не прошло `ingest`, либо потоки рендера мешают друг другу | `ingest`; `build-reel` сам повторит с 2 и 1 потоком |
 | `Не найден исходник public/reels/…` в `build-reel` | `videoFile` в плане не совпадает с файлом или не было `ingest` | проверить путь, запустить `ingest` |
-| `Модель не скачалась (нет доступа к huggingface.co?)` | сеть не пускает к huggingface (бывает в облачной среде) | запустить `transcribe` на компьютере владельца |
+| `Модель не скачалась (нет доступа к huggingface.co?)` | сеть не пускает к huggingface (бывает в облачной среде) | `npm run estimate-captions` (по паузам) или `transcribe` на компьютере владельца |
 | `bad magic` / `failed to initialize whisper context` | оборванная загрузка модели | удалить `whisper.cpp/ggml-*.bin` и повторить (скрипт делает это сам) |
 | субтитры обрывками или кириллицей в узбекском ролике | Whisper не знает узбекский | `npm run align`; текст в `script.md` должен совпадать с произнесённым |
 | `align` показывает расхождение > 25% | говорящий отошёл от текста | вписать в `script.md` реально произнесённый текст и повторить |
@@ -62,11 +63,15 @@
 - Цифры без источника в графику не выносим, даже если они есть в голосе; говорим владельцу.
 - Не отправлять ролик, пока сборка не напечатала «Готово».
 - Во время `slam` субтитры скрываются: на светлой заливке белый текст не читается, слово-удар говорит само.
+- Голос ElevenLabs делает паузы ровно на знаках препинания — `estimate-captions` раскладывает текст почти без ошибок (ролик `dorogoy-rayon`).
+- Голос ElevenLabs даёт пики выше −1,5 dBTP: `finalize` сам переключается на динамическую нормализацию.
+- Ролик о районах: карта `districts` — сильный герой; повторять её 3–4 раза с разными состояниями (поиск → №1 → топ-3 → другой сегмент), между ними — цифра, факторы (`hub` по словам), удар.
 
 ## 5. Устройство кода
 - `src/Reel/schema.ts` — формат `edit.json` (источник истины). `src/Reel/Reel.tsx` — слои ролика. `src/Reel/meta.ts` — длина ролика, загрузка субтитров, вырезка пауз до рендера.
-- `src/Reel/fx/` — элементы: Title, Accent, Typed, Slam, ToolCard, ChatPrompt, Steps, BigNumber, ScreenInsert, Broll, Concept (icon), Compare, Flow, Chart, Paper, Sites (clones, morph — объявление-герой), Hub, Property, Location, ProgressBar; `icons.tsx` — словарь иконок (lucide).
+- `src/Reel/fx/` — элементы: Title, Accent, Typed, Slam, ToolCard, ChatPrompt, Steps, BigNumber, ScreenInsert, Broll, Concept (icon), Compare, Flow, Chart, Paper, Sites (clones, morph — объявление-герой), Hub, Property, Location, DistrictMap (карта районов; геометрия — `tashkent.ts`), ProgressBar; `icons.tsx` — словарь иконок (lucide).
+- Элементы получают `local(сек исходника)` → кадр от начала элемента: так внутренние моменты (`times`, `focus[].at`) попадают в слова с учётом вырезки пауз и ускорения.
 - `camera.ts` — смена плана, наезды, тряска; `Transitions.tsx` — переходы; `Sound.tsx` — звуки и музыка; `cuts.ts` — вырезка пауз и ускорение; `Captions.tsx` — субтитры по образцу; `HookCta.tsx` — хук и концовка; `Speaker.tsx` — видео спикера по кускам; `Stage.tsx` — живой фон; `layout.tsx` — зоны форматов; `theme.ts` — палитры; `motion.ts` — единые кривые движения; `fonts.ts` — шрифты из node_modules (интернет при рендере не нужен).
-- `scripts/` — ingest, transcribe, align, new-reel, check, build-reel, finalize, sfx, pack-skill; `scripts/lib/env.mjs` — ffmpeg из Remotion, свой браузер.
+- `scripts/` — ingest, transcribe, estimate-captions, align, new-reel, check, build-reel, finalize, sfx, pack-skill; `scripts/lib/env.mjs` — ffmpeg из Remotion, свой браузер.
 - Новый элемент: тип в `schema.ts` → компонент в `fx/` → ветка в `Overlays.tsx` → звук в `Sound.tsx` → описание в `.claude/agents/reel-editor.md` → `npm run pack-skill`.
 - Новая палитра: запись в `PALETTES` (`theme.ts`) → значение в `palette` (`schema.ts`) → `npm run pack-skill`.

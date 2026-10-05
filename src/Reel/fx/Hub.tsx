@@ -5,7 +5,7 @@ import { enter, exit, pop } from "../motion";
 import { Center, type FxProps } from "./common";
 
 // Ядро + модули: модули подключаются по очереди, по линиям бежит свет.
-export const Hub: React.FC<FxProps<OverlayOf<"hub">>> = ({ o, total, zone, p }) => {
+export const Hub: React.FC<FxProps<OverlayOf<"hub">>> = ({ o, total, zone, p, local }) => {
   const f = useCurrentFrame();
   const { fps } = useVideoConfig();
   const out = exit(f, total, 7);
@@ -16,7 +16,7 @@ export const Hub: React.FC<FxProps<OverlayOf<"hub">>> = ({ o, total, zone, p }) 
   // модули по кругу: 2 — слева/справа, 3 — треугольником, 4 — крестом
   const angle = (i: number) => (n === 2 ? Math.PI : -Math.PI / 2) + (2 * Math.PI * i) / n;
   const pos = (i: number) => ({ x: c + Math.cos(angle(i)) * R, y: c + Math.sin(angle(i)) * R });
-  const at = (i: number) => 0.6 * fps + i * 0.6 * fps;
+  const at = (i: number) => (o.times?.[i] !== undefined ? local(o.times[i]) : 0.6 * fps + i * 0.6 * fps);
   const coreS = pop(f, fps, 0);
   return (
     <Center style={{ opacity: out }}>

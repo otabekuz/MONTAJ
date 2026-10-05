@@ -11,7 +11,7 @@ export const Accent: React.FC<FxProps<OverlayOf<"accent">>> = ({ o, total, zone,
   const s = pop(f, fps, 0, 320);
   const out = exit(f, total, 7);
   const lines = balance(o.text.toUpperCase(), 11);
-  const size = fitFont(lines.join("\n"), zone.w - 160, 170, 90, 0.6);
+  const size = fitFont(lines.join("\n"), zone.w - 160, 170, 80, 0.72);
   const ring = Math.min(1, f / 14);
   return (
     <Center style={{ opacity: out }}>

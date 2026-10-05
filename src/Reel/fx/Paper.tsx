@@ -5,13 +5,13 @@ import { EASE_OUT, enter, exit } from "../motion";
 import { Center, type FxProps } from "./common";
 
 // Светлый «бумажный» мир: бланк с пунктами, галочки и зачёркивания появляются по очереди.
-export const Paper: React.FC<FxProps<OverlayOf<"paper">>> = ({ o, total, zone, p }) => {
+export const Paper: React.FC<FxProps<OverlayOf<"paper">>> = ({ o, total, zone, p, local }) => {
   const f = useCurrentFrame();
   const { fps } = useVideoConfig();
   const inT = enter(f, 0, 14);
   const out = exit(f, total, 8);
   const w = Math.min(zone.w - 140, 860);
-  const itemAt = (i: number) => 0.5 * fps + i * 0.9 * fps;
+  const itemAt = (i: number) => (o.times?.[i] !== undefined ? local(o.times[i]) : 0.5 * fps + i * 0.9 * fps);
   return (
     <Center style={{ opacity: out }}>
       <div

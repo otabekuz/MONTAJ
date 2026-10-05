@@ -10,7 +10,7 @@ type Ev = { frame: number; sound: Sfx; volume: number };
 
 export const RISER_SECONDS = 1.6;
 
-const overlaySounds = (o: Overlay, from: number, fps: number, frames: number): Ev[] => {
+const overlaySounds = (o: Overlay, from: number, fps: number, frames: number, tl: Timeline): Ev[] => {
   const s = (sec: number, sound: Sfx, volume: number): Ev => ({ frame: from + Math.round(sec * fps), sound, volume });
   switch (o.type) {
     case "title": return [s(0.05, "pop", 0.3)];
@@ -25,13 +25,21 @@ const overlaySounds = (o: Overlay, from: number, fps: number, frames: number): E
     case "compare": return [s(0.55, "tick", 0.4), s(1.0, "pop", 0.34)];
     case "flow": return o.nodes.map((_, i) => s(0.15 + i * 0.75, "pop", 0.3));
     case "typed": return [s(0, "tick", 0.22)];
-    case "paper": return [s(0, "pop", 0.25), ...o.items.map((_, i) => s(0.7 + i * 0.9, "tick", 0.36))];
+    case "paper": return [s(0, "pop", 0.25), ...o.items.map((_, i) => (o.times?.[i] !== undefined ? { frame: tl.toFrame(o.times[i]) + 6, sound: "tick" as const, volume: 0.36 } : s(0.7 + i * 0.9, "tick", 0.36)))];
     case "clones": return [0, 1, 2].map((i) => s((i * 4) / fps, "pop", 0.26));
     case "morph": return [{ frame: from + Math.round(frames * 0.62), sound: "shine", volume: 0.4 }];
-    case "hub": return [s(0, "pop", 0.3), ...o.items.map((_, i) => s(0.6 + i * 0.6, "pop", 0.26))];
+    case "hub": return [s(0, "pop", 0.3), ...o.items.map((_, i) => (o.times?.[i] !== undefined ? { frame: tl.toFrame(o.times[i]), sound: "pop" as const, volume: 0.28 } : s(0.6 + i * 0.6, "pop", 0.26)))];
     case "chart": return o.bars.map((_, i) => s((8 + i * 6) / fps, "tick", 0.3));
     case "property": return [s(0, "pop", 0.3), s(0.6, "shine", 0.3)];
     case "location": return [s(0.6, "pop", 0.4)];
+    case "districts":
+      return o.focus.length
+        ? [
+            s(0.1, "tick", 0.3),
+            ...o.focus.map((x, i) => (x.at !== undefined ? { frame: tl.toFrame(x.at), sound: "pop" as const, volume: 0.42 } : s((8 + i * Math.round(0.6 * fps)) / fps, "pop", 0.42))),
+            ...(o.objects && o.objects !== "none" ? [{ frame: (o.focus[0].at !== undefined ? tl.toFrame(o.focus[0].at) : from + 8) + 14, sound: "shine" as const, volume: 0.3 }] : []),
+          ]
+        : [s(0.1, "tick", 0.3), s(0.35, "pop", 0.35)];
     case "broll": return [];
   }
 };
@@ -59,7 +67,7 @@ export const SoundLayer: React.FC<{
   if (sfx) {
     overlays.forEach((o) => {
       const { from, frames } = tl.span(o.at, o.dur);
-      events.push(...overlaySounds(o, from, fps, frames));
+      events.push(...overlaySounds(o, from, fps, frames, tl));
     });
     transitions.forEach((t) => {
       const snd = transitionSound[t.type];

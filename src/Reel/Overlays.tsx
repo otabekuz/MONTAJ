@@ -6,6 +6,7 @@ import { Broll } from "./fx/Broll";
 import { Chart } from "./fx/Chart";
 import { ChatPrompt } from "./fx/ChatPrompt";
 import { Compare } from "./fx/Compare";
+import { DistrictMap } from "./fx/DistrictMap";
 import { Concept } from "./fx/Concept";
 import { Flow } from "./fx/Flow";
 import { Hub } from "./fx/Hub";
@@ -25,7 +26,7 @@ import type { Overlay } from "./schema";
 import type { Palette } from "./theme";
 
 /** Элементы, которые в full уводят спикера в размытие (графике нужен спокойный фон) */
-export const HEAVY = new Set<Overlay["type"]>(["chat", "steps", "number", "title", "screen", "compare", "flow", "chart", "paper", "hub", "clones", "morph", "property", "location", "typed", "icon"]);
+export const HEAVY = new Set<Overlay["type"]>(["chat", "steps", "number", "title", "screen", "compare", "flow", "chart", "paper", "hub", "clones", "morph", "property", "location", "districts", "typed", "icon"]);
 
 const renderFx = (o: Overlay, props: Omit<FxProps<never>, "o">) => {
   switch (o.type) {
@@ -49,6 +50,7 @@ const renderFx = (o: Overlay, props: Omit<FxProps<never>, "o">) => {
     case "hub": return <Hub o={o} {...props} />;
     case "property": return <Property o={o} {...props} />;
     case "location": return <Location o={o} {...props} />;
+    case "districts": return <DistrictMap o={o} {...props} />;
   }
 };
 
@@ -72,7 +74,7 @@ export const Overlays: React.FC<{
       return (
         <Sequence key={i} from={from} durationInFrames={frames} layout="none" name={`${o.type} ${o.at}s`}>
           <div style={{ position: "absolute", left: box.x, top: box.y, width: box.w, height: box.h, overflow: full ? "hidden" : "visible", ...(full ? {} : gfxStyle) }}>
-            {renderFx(o, { total: frames, zone: { ...box, x: 0, y: 0 }, p, layout, lang })}
+            {renderFx(o, { total: frames, zone: { ...box, x: 0, y: 0 }, p, layout, lang, local: (s) => tl.toFrame(s) - from })}
           </div>
         </Sequence>
       );

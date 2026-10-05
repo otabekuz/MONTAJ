@@ -8,7 +8,7 @@ import { balance, Center, fitFont, type FxProps, Label } from "./common";
 export const Title: React.FC<FxProps<OverlayOf<"title">>> = ({ o, total, zone, p }) => {
   const f = useCurrentFrame();
   const lines = balance(o.text.toUpperCase(), 12);
-  const size = fitFont(lines.join("\n"), zone.w - 140, 150, 78, 0.6);
+  const size = fitFont(lines.join("\n"), zone.w - 140, 150, 70, 0.7);
   const out = exit(f, total, 7);
   let wordIndex = 0;
   return (

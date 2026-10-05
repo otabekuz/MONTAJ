@@ -10,6 +10,8 @@ export type FxProps<T> = {
   p: Palette;
   layout: "full" | "split" | "voice";
   lang: "uz" | "ru";
+  /** секунда исходника → кадр от начала элемента (с учётом вырезки пауз и ускорения) */
+  local: (sourceSec: number) => number;
 };
 
 /** Слой на всю зону графики, контент по центру */

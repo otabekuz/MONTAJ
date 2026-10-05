@@ -1,0 +1,95 @@
+{
+  "layout": "voice",
+  "lang": "ru",
+  "palette": "sky",
+  "videoFile": "reels/dorogoy-rayon.mp3",
+  "captionsFile": "reels/dorogoy-rayon.captions.json",
+  "fallbackSeconds": 65,
+  "cutPauses": true,
+  "speed": 1.2,
+  "beats": [],
+  "cues": [{ "at": 14.7, "sound": "riser", "volume": 0.3 }],
+  "hook": "Самый дорогой район?",
+  "hookSeconds": 4.3,
+  "highlightWords": ["дорогим", "Шайхантахурский", "2 100", "Мирабадский", "Яккасарайский", "иначе.", "Мирзо-Улугбекском", "сегмент:", "реальная"],
+  "autoFraming": false,
+  "zooms": [],
+  "transitions": [
+    { "at": 5.88, "type": "smear" },
+    { "at": 14.62, "type": "flash" },
+    { "at": 30.76, "type": "smear" },
+    { "at": 39.3, "type": "glitch" },
+    { "at": 45.22, "type": "smear" },
+    { "at": 56.4, "type": "smear" }
+  ],
+  "overlays": [
+    { "type": "districts", "at": 0.15, "dur": 5.7, "focus": [] },
+    { "type": "icon", "at": 5.92, "dur": 1.42, "items": [{ "icon": "apartment", "label": "Квартиры" }] },
+    {
+      "type": "districts",
+      "at": 7.38,
+      "dur": 4.85,
+      "title": "Квартиры · цена м²",
+      "zoom": true,
+      "objects": "towers",
+      "focus": [{ "id": "shayxontohur", "rank": 1, "at": 10.25 }]
+    },
+    { "type": "typed", "at": 12.28, "dur": 2.25, "text": "Средняя стоимость", "em": "Средняя" },
+    { "type": "number", "at": 14.58, "dur": 2.15, "value": 2100, "prefix": "$", "suffix": "", "label": "в среднем за м²" },
+    { "type": "typed", "at": 17.68, "dur": 3.3, "text": "Почему так дорого?", "em": "дорого?" },
+    {
+      "type": "hub",
+      "at": 21.0,
+      "dur": 9.7,
+      "center": "Цена",
+      "items": ["Центр", "Инфраструктура", "Бизнес", "Дефицит", "Спрос"],
+      "times": [21.11, 22.63, 24.32, 26.22, 29.73]
+    },
+    {
+      "type": "districts",
+      "at": 30.81,
+      "dur": 3.75,
+      "title": "Топ-3 · квартиры",
+      "zoom": true,
+      "focus": [
+        { "id": "shayxontohur", "rank": 1, "at": 30.85 },
+        { "id": "mirobod", "rank": 2, "at": 31.5 },
+        { "id": "yakkasaroy", "rank": 3, "at": 32.29 }
+      ]
+    },
+    { "type": "accent", "at": 34.6, "dur": 3.1, "text": "Стабильно в топе", "emoji": "" },
+    { "type": "slam", "at": 39.35, "dur": 2.9, "text": "ДОМА", "em": "рынок выглядит иначе" },
+    { "type": "icon", "at": 42.98, "dur": 2.22, "items": [{ "icon": "home", "label": "Дома" }, { "icon": "map", "label": "Участки" }] },
+    {
+      "type": "districts",
+      "at": 45.26,
+      "dur": 5.3,
+      "title": "Дома и участки",
+      "zoom": true,
+      "objects": "houses",
+      "focus": [{ "id": "mirzoulugbek", "at": 48.3 }]
+    },
+    { "type": "title", "at": 50.8, "dur": 3.9, "text": "Не только район", "sub": "оценка" },
+    { "type": "typed", "at": 54.72, "dur": 1.7, "text": "Важен сегмент", "em": "сегмент" },
+    {
+      "type": "paper",
+      "at": 56.45,
+      "dur": 5.0,
+      "tag": "СЕГМЕНТ",
+      "title": "от него зависит цена",
+      "items": [
+        { "text": "Квартира", "mark": "v" },
+        { "text": "Новостройка", "mark": "v" },
+        { "text": "Вторичка", "mark": "v" },
+        { "text": "Дом", "mark": "v" },
+        { "text": "Участок", "mark": "v" }
+      ],
+      "times": [56.56, 57.23, 58.35, 59.36, 59.85]
+    },
+    { "type": "typed", "at": 61.5, "dur": 3.4, "text": "Реальная стоимость объекта", "em": "Реальная" }
+  ],
+  "sfx": true,
+  "musicFile": "",
+  "cta": "",
+  "ctaSeconds": 2.6
+}
