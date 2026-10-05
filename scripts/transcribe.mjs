@@ -1,5 +1,6 @@
 // npm run transcribe -- reels/<slug>.mp4 <uz|ru>
-// Распознаёт речь (whisper.cpp, модель large-v3-turbo) → public/reels/<slug>.captions.json — слова с таймкодами.
+// Распознаёт речь (whisper.cpp 1.7.6, модель large-v3-turbo, точные тайминги слов через DTW)
+// → public/reels/<slug>.captions.json — слова с таймкодами.
 // Первый запуск ставит whisper.cpp и качает модель (~1,6 ГБ) — запускать в фоне, несколько минут.
 // Узбекский Whisper пишет с ошибками — после этого всегда `npm run align`: текст берём из сценария, время — от Whisper.
 import fs from "node:fs";
@@ -20,8 +21,12 @@ if (!fs.existsSync(src)) {
   process.exit(1);
 }
 
+// модели лежат в whisper.cpp/ (как раньше — 1,6 ГБ заново не качаем), программа — в отдельной папке версии
 const WHISPER_DIR = path.resolve("whisper.cpp");
-const VERSION = "1.5.5";
+// 1.7.6: есть DTW-пресет large.v3.turbo (в 1.5.5 его нет — тайминги «размазывались») и готовая сборка под Windows
+const VERSION = "1.7.6";
+const BIN_DIR = path.resolve(`whisper.cpp-${VERSION}`);
+const EXE = path.join(BIN_DIR, "build", "bin", process.platform === "win32" ? "whisper-cli.exe" : "whisper-cli");
 const MODEL = process.env.WHISPER_MODEL ?? "large-v3-turbo";
 
 const base = src.replace(/\.[^.]+$/, "");
@@ -32,8 +37,27 @@ console.log("Готовлю звук 16 кГц…");
 // пересчёт фильтром: "-ar/-ac" роняют ffmpeg Remotion на Windows (0xC0000005)
 await runFf(["-y", "-i", src, "-vn", "-af", "aresample=16000,aformat=sample_rates=16000:channel_layouts=mono", "-c:a", "pcm_s16le", wav]);
 
-console.log("whisper.cpp…");
-await installWhisperCpp({ to: WHISPER_DIR, version: VERSION, printOutput: false });
+console.log(`whisper.cpp ${VERSION}…`);
+// Remotion ищет программу в build/bin/, а в архиве для Windows она лежит в Release/ — переносим сами
+const fixWindowsLayout = () => {
+  const rel = path.join(BIN_DIR, "Release");
+  if (process.platform === "win32" && !fs.existsSync(EXE) && fs.existsSync(path.join(rel, "whisper-cli.exe"))) {
+    fs.mkdirSync(path.dirname(EXE), { recursive: true });
+    fs.cpSync(rel, path.dirname(EXE), { recursive: true });
+  }
+};
+fixWindowsLayout();
+if (!fs.existsSync(EXE)) {
+  // недоустановленная папка этой версии мешает установщику — убираем только её
+  fs.rmSync(BIN_DIR, { recursive: true, force: true });
+  await installWhisperCpp({ to: BIN_DIR, version: VERSION, printOutput: false });
+  fixWindowsLayout();
+}
+if (!fs.existsSync(EXE)) {
+  console.error(`Не найден ${EXE} после установки whisper.cpp ${VERSION}.`);
+  process.exit(1);
+}
+fs.mkdirSync(WHISPER_DIR, { recursive: true });
 console.log(`Модель ${MODEL}…`);
 // оборванная загрузка или ответ прокси вместо модели — удалить, иначе whisper падает с «bad magic»
 const modelPath = path.join(WHISPER_DIR, `ggml-${MODEL}.bin`);
@@ -51,11 +75,12 @@ console.log(`Распознаю (${lang})…`);
 let last = -1;
 const result = await transcribe({
   inputPath: wav,
-  whisperPath: WHISPER_DIR,
+  whisperPath: BIN_DIR,
   whisperCppVersion: VERSION,
   model: MODEL,
-  // whisper.cpp 1.5.5 не знает DTW-пресет large.v3.turbo («unknown DTW preset») — для turbo тайминги по токенам
-  tokenLevelTimestamps: !MODEL.includes("turbo"),
+  modelFolder: WHISPER_DIR,
+  // точные тайминги каждого слова (DTW); в 1.7.6 пресет large.v3.turbo есть
+  tokenLevelTimestamps: true,
   language: lang,
   onProgress: (p) => {
     const pct = Math.floor(p * 10) * 10;
