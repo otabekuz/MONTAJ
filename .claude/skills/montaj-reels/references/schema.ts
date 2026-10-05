@@ -137,6 +137,50 @@ export const overlaySchema = z.discriminatedUnion("type", [
   // Метка-плашка сверху кадра (над головой): icon + короткий текст из речи — улица, тип дома, этажи.
   // Спикер не размывается; y — верх плашки, доля кадра (по умолчанию 0.13)
   z.object({ type: z.literal("chip"), ...base, icon: z.string(), text: z.string(), y: z.number().min(0).max(1).optional() }),
+  // Телефон с Telegram (макет интерфейса). mode: chat — переписка с ботом (сообщение пользователя печатается
+  // typeDur секунд от at и отправляется; бот «печатает…» и отвечает текстом, чипами-параметрами, карточками
+  // квартир, статусом note); channel — лента постов канала, потом поиск search (match — какие посты остаются);
+  // start — экран бота с кнопкой и нажатием в tapAt. Все времена — секунды исходника (по словам).
+  z.object({
+    type: z.literal("tg"),
+    ...base,
+    mode: z.enum(["chat", "channel", "start"]),
+    title: z.string(),
+    sub: z.string().optional(),
+    messages: z
+      .array(
+        z.object({
+          from: z.enum(["user", "bot"]),
+          at: z.number().min(0),
+          text: z.string().optional(),
+          typeDur: z.number().min(0).optional(),
+          chips: z.array(z.object({ text: z.string(), icon: z.string(), at: z.number().min(0).optional() })).optional(),
+          cards: z.number().int().min(0).max(3).optional(),
+          note: z.string().optional(),
+        }),
+      )
+      .optional(),
+    posts: z.array(z.object({ author: z.string(), title: z.string(), tag: z.string() })).optional(),
+    search: z.object({ text: z.string(), at: z.number().min(0), match: z.array(z.number().int()) }).optional(),
+    lines: z.array(z.string()).optional(),
+    button: z.string().optional(),
+    tapAt: z.number().min(0).optional(),
+  }),
+  // «Листаете сотни объявлений»: в телефоне летит лента серых карточек; aiAt — включается ИИ-сканер,
+  // несколько карточек превращаются в элитные квартиры. label — тонкая подпись сверху
+  z.object({ type: z.literal("feed"), ...base, label: z.string().optional(), aiAt: z.number().min(0).optional() }),
+  // Уведомления: экран блокировки, в heroAt вспыхивает новая квартира (heroLabel), затем падают уведомления items
+  z.object({
+    type: z.literal("notify"),
+    ...base,
+    heroAt: z.number().min(0).optional(),
+    heroLabel: z.string().optional(),
+    clock: z.string().optional(),
+    dateLabel: z.string().optional(),
+    items: z.array(z.object({ at: z.number().min(0), title: z.string(), text: z.string(), time: z.string().optional() })).max(3),
+  }),
+  // «Каждый день заново»: неделя, в каждом дне вспыхивает поиск, в strikeAt всё перечёркивается, label — вывод
+  z.object({ type: z.literal("days"), ...base, label: z.string().optional(), strikeAt: z.number().min(0).optional() }),
   // Локация: на схематичной карте падает метка, подпись района/ориентира
   z.object({ type: z.literal("location"), ...base, place: z.string(), sub: z.string() }),
   // Карта районов Ташкента (схема). focus пустой — «поиск» со сканером; иначе районы подсвечиваются по очереди:

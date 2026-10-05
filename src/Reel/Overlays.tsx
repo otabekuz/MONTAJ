@@ -7,6 +7,10 @@ import { Chart } from "./fx/Chart";
 import { ChatPrompt } from "./fx/ChatPrompt";
 import { Chip } from "./fx/Chip";
 import { Compare } from "./fx/Compare";
+import { Days } from "./fx/Days";
+import { Feed } from "./fx/Feed";
+import { Notify } from "./fx/Notify";
+import { Telegram } from "./fx/Telegram";
 import { DistrictMap } from "./fx/DistrictMap";
 import { Concept } from "./fx/Concept";
 import { Flow } from "./fx/Flow";
@@ -53,7 +57,11 @@ const renderFx = (o: Overlay, props: Omit<FxProps<never>, "o">) => {
     case "location": return <Location o={o} {...props} />;
     case "districts": return <DistrictMap o={o} {...props} />;
     case "chip": return <Chip o={o} {...props} />;
-    case "giant": return null; // рисуется за спиной человека — см. Reel.tsx
+    case "giant": return null;
+    case "tg": return <Telegram o={o} {...props} />;
+    case "feed": return <Feed o={o} {...props} />;
+    case "notify": return <Notify o={o} {...props} />;
+    case "days": return <Days o={o} {...props} />; // рисуется за спиной человека — см. Reel.tsx
   }
 };
 
