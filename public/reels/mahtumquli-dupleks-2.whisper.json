@@ -1,0 +1,233 @@
+[
+ {
+  "text": "V",
+  "startMs": 0,
+  "endMs": 70,
+  "timestampMs": null,
+  "confidence": 0.958389
+ },
+ {
+  "text": "ah",
+  "startMs": 70,
+  "endMs": 210,
+  "timestampMs": null,
+  "confidence": 0.786855
+ },
+ {
+  "text": "k",
+  "startMs": 210,
+  "endMs": 280,
+  "timestampMs": null,
+  "confidence": 0.999992
+ },
+ {
+  "text": "ut",
+  "startMs": 280,
+  "endMs": 420,
+  "timestampMs": null,
+  "confidence": 0.651627
+ },
+ {
+  "text": "un",
+  "startMs": 420,
+  "endMs": 560,
+  "timestampMs": null,
+  "confidence": 0.999935
+ },
+ {
+  "text": "k",
+  "startMs": 560,
+  "endMs": 630,
+  "timestampMs": null,
+  "confidence": 0.542733
+ },
+ {
+  "text": "ud",
+  "startMs": 630,
+  "endMs": 770,
+  "timestampMs": null,
+  "confidence": 0.503663
+ },
+ {
+  "text": "u",
+  "startMs": 770,
+  "endMs": 840,
+  "timestampMs": null,
+  "confidence": 0.955813
+ },
+ {
+  "text": "k",
+  "startMs": 840,
+  "endMs": 910,
+  "timestampMs": null,
+  "confidence": 0.998681
+ },
+ {
+  "text": "uch",
+  "startMs": 910,
+  "endMs": 1120,
+  "timestampMs": null,
+  "confidence": 0.995832
+ },
+ {
+  "text": "as",
+  "startMs": 1120,
+  "endMs": 1260,
+  "timestampMs": null,
+  "confidence": 0.997352
+ },
+ {
+  "text": "de",
+  "startMs": 1260,
+  "endMs": 1400,
+  "timestampMs": null,
+  "confidence": 0.270378
+ },
+ {
+  "text": "j",
+  "startMs": 1400,
+  "endMs": 1470,
+  "timestampMs": null,
+  "confidence": 0.692162
+ },
+ {
+  "text": "al",
+  "startMs": 1470,
+  "endMs": 1610,
+  "timestampMs": null,
+  "confidence": 0.993043
+ },
+ {
+  "text": "ash",
+  "startMs": 1610,
+  "endMs": 1820,
+  "timestampMs": null,
+  "confidence": 1
+ },
+ {
+  "text": "k",
+  "startMs": 1820,
+  "endMs": 1890,
+  "timestampMs": null,
+  "confidence": 0.463326
+ },
+ {
+  "text": "end",
+  "startMs": 1890,
+  "endMs": 2100,
+  "timestampMs": null,
+  "confidence": 0.980961
+ },
+ {
+  "text": "n",
+  "startMs": 2100,
+  "endMs": 2170,
+  "timestampMs": null,
+  "confidence": 0.828568
+ },
+ {
+  "text": "vest",
+  "startMs": 2170,
+  "endMs": 2450,
+  "timestampMs": null,
+  "confidence": 0.678552
+ },
+ {
+  "text": "ro",
+  "startMs": 2450,
+  "endMs": 2600,
+  "timestampMs": null,
+  "confidence": 0.999752
+ },
+ {
+  "text": "k",
+  "startMs": 2600,
+  "endMs": 2660,
+  "timestampMs": null,
+  "confidence": 0.999317
+ },
+ {
+  "text": "ada",
+  "startMs": 2660,
+  "endMs": 2880,
+  "timestampMs": null,
+  "confidence": 0.972574
+ },
+ {
+  "text": "du",
+  "startMs": 2880,
+  "endMs": 3020,
+  "timestampMs": null,
+  "confidence": 0.999714
+ },
+ {
+  "text": "pl",
+  "startMs": 3020,
+  "endMs": 3160,
+  "timestampMs": null,
+  "confidence": 1
+ },
+ {
+  "text": "iks",
+  "startMs": 3160,
+  "endMs": 3370,
+  "timestampMs": null,
+  "confidence": 0.999741
+ },
+ {
+  "text": "k",
+  "startMs": 3370,
+  "endMs": 3440,
+  "timestampMs": null,
+  "confidence": 0.999931
+ },
+ {
+  "text": "han",
+  "startMs": 3440,
+  "endMs": 3650,
+  "timestampMs": null,
+  "confidence": 1
+ },
+ {
+  "text": "adan",
+  "startMs": 3650,
+  "endMs": 3940,
+  "timestampMs": null,
+  "confidence": 0.607515
+ },
+ {
+  "text": "k",
+  "startMs": 3940,
+  "endMs": 4010,
+  "timestampMs": null,
+  "confidence": 0.994272
+ },
+ {
+  "text": "ors",
+  "startMs": 4010,
+  "endMs": 4220,
+  "timestampMs": null,
+  "confidence": 0.858759
+ },
+ {
+  "text": "ad",
+  "startMs": 4220,
+  "endMs": 4360,
+  "timestampMs": null,
+  "confidence": 0.71505
+ },
+ {
+  "text": "ans",
+  "startMs": 4360,
+  "endMs": 4570,
+  "timestampMs": null,
+  "confidence": 0.795259
+ },
+ {
+  "text": ".",
+  "startMs": 4570,
+  "endMs": 4960,
+  "timestampMs": null,
+  "confidence": 1
+ }
+]

@@ -68,7 +68,7 @@ try {
       done = true;
       break;
     } catch (e) {
-      if (concurrency === 1 || !/No frame found|frame|timeout|Target closed/i.test(String(e?.message))) throw e;
+      if (concurrency === 1 || !/No frame found|frame|timeout|Target closed|3221225477/i.test(String(e?.message))) throw e;
       console.log(`Сбой рендера (${String(e.message).split("\n")[0]}) — повторяю с ${concurrency === null ? 2 : 1} потоками…`);
     }
   }
