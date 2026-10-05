@@ -42,6 +42,16 @@ export const TransitionsLayer: React.FC<{ items: TItem[]; zone: Box; p: Palette 
         if (t.type === "flash") {
           return <div key={i} style={{ position: "absolute", inset: 0, background: "#fff", opacity: Math.pow(k, 1.6) * 0.95 }} />;
         }
+        if (t.type === "leak") {
+          // засветка: тёплое пятно света проплывает через кадр (окно перехода шире — ±14 кадров)
+          const pos = interpolate(d, [-BEFORE, AFTER], [-30, 130]);
+          return (
+            <div key={i} style={{ position: "absolute", inset: 0, mixBlendMode: "screen", opacity: k * 0.85 }}>
+              <div style={{ position: "absolute", top: "-20%", left: `${pos - 40}%`, width: "80%", height: "140%", background: `radial-gradient(ellipse at center, rgba(255,214,160,0.75) 0%, ${p.accentSoft} 35%, transparent 70%)`, transform: "rotate(18deg)", filter: "blur(30px)" }} />
+              <div style={{ position: "absolute", top: 0, left: `${pos}%`, width: "18%", height: "100%", background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent)", filter: "blur(18px)" }} />
+            </div>
+          );
+        }
         if (t.type === "wipe") {
           const pos = interpolate(d, [-BEFORE, AFTER], [-110, 110]);
           return (

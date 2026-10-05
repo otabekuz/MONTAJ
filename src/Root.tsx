@@ -2,6 +2,7 @@ import { Composition, Folder } from "remotion";
 import { demoFull, demoSplit, demoVoice } from "./Reel/demo";
 import { FPS, H, W } from "./Reel/layout";
 import { calculateReelMetadata } from "./Reel/meta";
+import { Matte, type MatteProps } from "./Reel/Matte";
 import { Reel } from "./Reel/Reel";
 import { type ReelProps, reelSchema } from "./Reel/schema";
 
@@ -23,6 +24,16 @@ export const RemotionRoot: React.FC = () => {
         defaultProps={reelDefaults}
         calculateMetadata={calculateReelMetadata}
         durationInFrames={FPS * 20}
+        fps={FPS}
+        width={W}
+        height={H}
+      />
+      <Composition
+        id="Matte"
+        component={Matte}
+        defaultProps={{ slug: "", width: W, height: H, frames: 1 } as MatteProps}
+        calculateMetadata={({ props }) => ({ durationInFrames: Math.max(1, props.frames) })}
+        durationInFrames={1}
         fps={FPS}
         width={W}
         height={H}

@@ -1,7 +1,11 @@
+import "@fontsource/inter-tight/300.css";
+import "@fontsource/inter-tight/300-italic.css";
 import "@fontsource/inter-tight/400.css";
 import "@fontsource/inter-tight/600.css";
 import "@fontsource/inter-tight/800.css";
 import "@fontsource/inter-tight/900.css";
+import "@fontsource/inter-tight/800-italic.css";
+import "@fontsource/inter-tight/900-italic.css";
 import "@fontsource/playfair-display/500-italic.css";
 import "@fontsource/playfair-display/700-italic.css";
 import { continueRender, delayRender } from "remotion";
@@ -10,6 +14,10 @@ import { continueRender, delayRender } from "remotion";
 // интернет при рендере не нужен. Ждём загрузки, иначе первые кадры уйдут с запасным шрифтом.
 const SAMPLE = "Aa Oʻoʻ Gʻgʻ Ёё Яя Ўў Ққ Ғғ Ҳҳ 0123456789$";
 const faces = [
+  "300 40px 'Inter Tight'",
+  "italic 300 40px 'Inter Tight'",
+  "italic 800 40px 'Inter Tight'",
+  "italic 900 40px 'Inter Tight'",
   "400 40px 'Inter Tight'",
   "600 40px 'Inter Tight'",
   "800 40px 'Inter Tight'",

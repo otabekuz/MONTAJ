@@ -33,6 +33,7 @@ import {
   Image,
   KeyRound,
   Landmark,
+  Layers2,
   Languages,
   Laptop,
   Lightbulb,
@@ -166,6 +167,8 @@ export const ICONS: Record<string, LucideIcon> = {
   sun: Sun,
   view: Mountain,
   water: Waves,
+  duplex: Layers2,
+  floors: Layers2,
 };
 
 export const iconKeys = Object.keys(ICONS);

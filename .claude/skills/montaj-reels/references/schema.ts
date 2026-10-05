@@ -122,6 +122,21 @@ export const overlaySchema = z.discriminatedUnion("type", [
     image: z.string(),
     specs: z.array(z.object({ icon: z.string(), label: z.string() })).max(4),
   }),
+  // Слово-гигант «за спиной» (система субтитров layered, уровень 1): огромное слово на уровне головы,
+  // человек стоит перед ним (нужен subjectFile — вырезка `npm run matte`). pre — маленькая приставка курсивом
+  // («10», «so I»); color: metal (металл палитры) | accent (градиент акцента) | white; y — центр по высоте 0..1.
+  z.object({
+    type: z.literal("giant"),
+    ...base,
+    text: z.string(),
+    pre: z.string().optional(),
+    color: z.enum(["metal", "accent", "white"]).optional(),
+    italic: z.boolean().optional(),
+    y: z.number().min(0).max(1).optional(),
+  }),
+  // Метка-плашка сверху кадра (над головой): icon + короткий текст из речи — улица, тип дома, этажи.
+  // Спикер не размывается; y — верх плашки, доля кадра (по умолчанию 0.13)
+  z.object({ type: z.literal("chip"), ...base, icon: z.string(), text: z.string(), y: z.number().min(0).max(1).optional() }),
   // Локация: на схематичной карте падает метка, подпись района/ориентира
   z.object({ type: z.literal("location"), ...base, place: z.string(), sub: z.string() }),
   // Карта районов Ташкента (схема). focus пустой — «поиск» со сканером; иначе районы подсвечиваются по очереди:
@@ -156,7 +171,8 @@ export const zoomSchema = z.object({
 // Переходы между смысловыми блоками
 export const transitionSchema = z.object({
   at: z.number().min(0),
-  type: z.enum(["whip", "wipe", "flash", "glitch", "smear"]),
+  // leak — мягкий световой блик (засветка плёнки) через весь кадр, без звука
+  type: z.enum(["whip", "wipe", "flash", "glitch", "smear", "leak"]),
 });
 
 // Отдельные звуковые акценты: riser заканчивается ровно в `at` (нарастание в момент),
@@ -177,6 +193,15 @@ export const reelSchema = z.object({
   palette: z.enum(["sky", "champagne", "sage", "blush", "monolith"]).optional(),
   // Файл лежит в папке public/ (в voice — аудиофайл с голосом)
   videoFile: z.string(),
+  // Вырезанный человек на прозрачном фоне (`npm run matte`) — для слов-гигантов «за спиной»
+  subjectFile: z.string().optional(),
+  // Субтитры: classic — две строки внизу (образец «$17 M»); layered — три уровня (гигант за спиной,
+  // две строки тонкий+жирный, «шёпот» тонким) по образцу ролика риелтора
+  captionStyle: z.enum(["classic", "layered"]).optional(),
+  // Высота строки субтитров (доля кадра 0..1); по умолчанию — из формата (layered: на уровне груди)
+  captionY: z.number().min(0).max(1).optional(),
+  // Лёгкая киношная цветокоррекция спикера (контраст, цвет) и виньетка
+  grade: z.boolean().optional(),
   // Субтитры, созданные скриптом `npm run transcribe` (тоже в public/)
   captionsFile: z.string(),
   // Длина ролика, если видео ещё нет (заглушка / демо)

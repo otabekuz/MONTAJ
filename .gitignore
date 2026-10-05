@@ -18,3 +18,8 @@ public/music/*
 # whisper.cpp и модель распознавания (~1,5 ГБ) — ставятся командой npm run transcribe
 whisper.cpp/
 dist/
+# модель вырезки и её WASM (качаются/копируются командой npm run matte), прозрачные вырезки и кадры
+public/models/
+public/mediapipe/
+public/reels/**/*.webm
+public/reels/*/frames/

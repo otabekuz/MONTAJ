@@ -21,7 +21,13 @@ export const Speaker: React.FC<{
   p: Palette;
   blur: number;
   cam: { scale: number; x: number; y: number };
-}> = ({ file, hasVideo, tl, box, layout, p, blur, cam }) => {
+  /** вырезанный человек (прозрачное видео) — рисуется поверх `middle` */
+  subjectFile?: string;
+  /** слой между видео и человеком: слова-гиганты «за спиной» */
+  middle?: React.ReactNode;
+  /** лёгкая цветокоррекция */
+  grade?: boolean;
+}> = ({ file, hasVideo, tl, box, layout, p, blur, cam, subjectFile, middle, grade }) => {
   const segs = useSegmentFrames(tl);
   const style: React.CSSProperties = {
     width: "100%",
@@ -29,17 +35,19 @@ export const Speaker: React.FC<{
     objectFit: "cover",
     objectPosition: layout === "split" ? "50% 25%" : "50% 50%",
   };
+  const camStyle: React.CSSProperties = {
+    position: "absolute",
+    inset: 0,
+    transform: `translate(${cam.x}px, ${cam.y}px) scale(${cam.scale})`,
+    transformOrigin: "50% 35%",
+    filter:
+      [blur > 0 ? `blur(${blur}px) brightness(${1 - blur / 60})` : "", grade ? "contrast(1.08) saturate(1.12) brightness(1.02)" : ""]
+        .filter(Boolean)
+        .join(" ") || undefined,
+  };
   return (
     <div style={{ position: "absolute", left: box.x, top: box.y, width: box.w, height: box.h, overflow: "hidden", background: "#000" }}>
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          transform: `translate(${cam.x}px, ${cam.y}px) scale(${cam.scale})`,
-          transformOrigin: "50% 35%",
-          filter: blur > 0 ? `blur(${blur}px) brightness(${1 - blur / 60})` : undefined,
-        }}
-      >
+      <div style={camStyle}>
         {hasVideo ? (
           segs.map((s, i) => (
             <Sequence key={i} from={s.from} durationInFrames={s.frames} layout="none">
@@ -50,6 +58,16 @@ export const Speaker: React.FC<{
           <Placeholder p={p} />
         )}
       </div>
+      {middle}
+      {hasVideo && subjectFile && middle ? (
+        <div style={camStyle}>
+          {segs.map((s, i) => (
+            <Sequence key={i} from={s.from} durationInFrames={s.frames} layout="none">
+              <OffthreadVideo src={staticFile(subjectFile)} transparent muted trimBefore={s.trim} playbackRate={tl.speed} style={style} />
+            </Sequence>
+          ))}
+        </div>
+      ) : null}
     </div>
   );
 };

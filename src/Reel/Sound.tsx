@@ -41,10 +41,13 @@ const overlaySounds = (o: Overlay, from: number, fps: number, frames: number, tl
           ]
         : [s(0.1, "tick", 0.3), s(0.35, "pop", 0.35)];
     case "broll": return [];
+    case "chip": return [s(0.05, "pop", 0.3), s(0.3, "tick", 0.2)];
+    case "giant": return [s(0, "impact", 0.32), s(0.15, "shine", 0.18)];
   }
 };
 
 const transitionSound: Record<TItem["type"], Sfx | null> = {
+  leak: null,
   flash: "shine",
   glitch: "glitch",
   wipe: "tick",

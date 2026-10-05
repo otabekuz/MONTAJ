@@ -5,6 +5,7 @@ import { BigNumber } from "./fx/BigNumber";
 import { Broll } from "./fx/Broll";
 import { Chart } from "./fx/Chart";
 import { ChatPrompt } from "./fx/ChatPrompt";
+import { Chip } from "./fx/Chip";
 import { Compare } from "./fx/Compare";
 import { DistrictMap } from "./fx/DistrictMap";
 import { Concept } from "./fx/Concept";
@@ -51,6 +52,8 @@ const renderFx = (o: Overlay, props: Omit<FxProps<never>, "o">) => {
     case "property": return <Property o={o} {...props} />;
     case "location": return <Location o={o} {...props} />;
     case "districts": return <DistrictMap o={o} {...props} />;
+    case "chip": return <Chip o={o} {...props} />;
+    case "giant": return null; // рисуется за спиной человека — см. Reel.tsx
   }
 };
 
@@ -67,9 +70,10 @@ export const Overlays: React.FC<{
 }> = ({ overlays, tl, zone, layout, lang, p, gfxStyle }) => (
   <>
     {overlays.map((o, i) => {
+      if (o.type === "giant") return null;
       const { from, frames } = tl.span(o.at, o.dur);
       // slam — всегда весь кадр; broll в full — перебивка на весь кадр
-      const full = o.type === "slam" || (o.type === "broll" && layout === "full");
+      const full = o.type === "slam" || o.type === "chip" || (o.type === "broll" && layout === "full");
       const box = full ? FULL_FRAME : zone;
       return (
         <Sequence key={i} from={from} durationInFrames={frames} layout="none" name={`${o.type} ${o.at}s`}>
