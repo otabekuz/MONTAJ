@@ -1,0 +1,842 @@
+[
+ {
+  "text": "Пока",
+  "startMs": 0,
+  "endMs": 320,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "вы",
+  "startMs": 320,
+  "endMs": 524,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "вручную",
+  "startMs": 524,
+  "endMs": 1019,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "листаете",
+  "startMs": 1019,
+  "endMs": 1572,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "сотни",
+  "startMs": 1572,
+  "endMs": 1950,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "объявлений,",
+  "startMs": 1950,
+  "endMs": 2620,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "искусственный",
+  "startMs": 2901,
+  "endMs": 3851,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "интеллект",
+  "startMs": 4051,
+  "endMs": 4477,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "уже",
+  "startMs": 4477,
+  "endMs": 4660,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "может",
+  "startMs": 4660,
+  "endMs": 4924,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "искать",
+  "startMs": 4924,
+  "endMs": 5228,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "квартиру",
+  "startMs": 5228,
+  "endMs": 5614,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "за",
+  "startMs": 5614,
+  "endMs": 5756,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "вас.",
+  "startMs": 5756,
+  "endMs": 5939,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "Вы",
+  "startMs": 6618,
+  "endMs": 6815,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "просто",
+  "startMs": 6815,
+  "endMs": 7237,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "один",
+  "startMs": 7237,
+  "endMs": 7546,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "раз",
+  "startMs": 7546,
+  "endMs": 7800,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "пишете",
+  "startMs": 7800,
+  "endMs": 8221,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "боту,",
+  "startMs": 8221,
+  "endMs": 8531,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "что",
+  "startMs": 8531,
+  "endMs": 8784,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "именно",
+  "startMs": 8784,
+  "endMs": 9206,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "вам",
+  "startMs": 9206,
+  "endMs": 9459,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "нужно.",
+  "startMs": 9459,
+  "endMs": 9825,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "Например:",
+  "startMs": 10208,
+  "endMs": 10591,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "«Трёхкомнатная",
+  "startMs": 11049,
+  "endMs": 11867,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "квартира",
+  "startMs": 11867,
+  "endMs": 12403,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "в",
+  "startMs": 12403,
+  "endMs": 12544,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "Мирабадском",
+  "startMs": 12544,
+  "endMs": 13249,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "районе,",
+  "startMs": 13249,
+  "endMs": 13673,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "до",
+  "startMs": 13673,
+  "endMs": 13870,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "200",
+  "startMs": 13870,
+  "endMs": 14124,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "тысяч",
+  "startMs": 14124,
+  "endMs": 14491,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "долларов,",
+  "startMs": 14491,
+  "endMs": 15027,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "с",
+  "startMs": 15027,
+  "endMs": 15168,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "новым",
+  "startMs": 15168,
+  "endMs": 15535,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "ремонтом».",
+  "startMs": 15535,
+  "endMs": 16071,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "Бот",
+  "startMs": 16715,
+  "endMs": 16976,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "понимает",
+  "startMs": 16976,
+  "endMs": 17528,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "запрос",
+  "startMs": 17528,
+  "endMs": 17964,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "обычным",
+  "startMs": 17964,
+  "endMs": 18458,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "человеческим",
+  "startMs": 18458,
+  "endMs": 19242,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "языком,",
+  "startMs": 19242,
+  "endMs": 19678,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "подбирает",
+  "startMs": 20035,
+  "endMs": 20614,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "подходящие",
+  "startMs": 20614,
+  "endMs": 21247,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "объекты",
+  "startMs": 21247,
+  "endMs": 21716,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "и",
+  "startMs": 21716,
+  "endMs": 21853,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "сохраняет",
+  "startMs": 21853,
+  "endMs": 22432,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "ваши",
+  "startMs": 22432,
+  "endMs": 22735,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "требования.",
+  "startMs": 22735,
+  "endMs": 23369,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "Но",
+  "startMs": 24135,
+  "endMs": 24331,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "самое",
+  "startMs": 24331,
+  "endMs": 24693,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "удобное",
+  "startMs": 24693,
+  "endMs": 25167,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "начинается",
+  "startMs": 25167,
+  "endMs": 25808,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "дальше.",
+  "startMs": 25808,
+  "endMs": 26226,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "Вам",
+  "startMs": 27093,
+  "endMs": 27363,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "не",
+  "startMs": 27363,
+  "endMs": 27573,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "нужно",
+  "startMs": 27573,
+  "endMs": 27964,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "каждый",
+  "startMs": 27964,
+  "endMs": 28415,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "день",
+  "startMs": 28415,
+  "endMs": 28745,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "заходить",
+  "startMs": 28745,
+  "endMs": 29316,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "и",
+  "startMs": 29316,
+  "endMs": 29467,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "повторять",
+  "startMs": 29467,
+  "endMs": 30098,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "поиск.",
+  "startMs": 30098,
+  "endMs": 30489,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "Как",
+  "startMs": 31061,
+  "endMs": 31292,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "только",
+  "startMs": 31292,
+  "endMs": 31676,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "появляется",
+  "startMs": 31676,
+  "endMs": 32265,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "новый",
+  "startMs": 32265,
+  "endMs": 32597,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "объект,",
+  "startMs": 32597,
+  "endMs": 32981,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "который",
+  "startMs": 32981,
+  "endMs": 33417,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "подходит",
+  "startMs": 33417,
+  "endMs": 33903,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "под",
+  "startMs": 33903,
+  "endMs": 34134,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "ваши",
+  "startMs": 34134,
+  "endMs": 34415,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "параметры,",
+  "startMs": 34415,
+  "endMs": 34953,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "бот",
+  "startMs": 35257,
+  "endMs": 35517,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "автоматически",
+  "startMs": 35517,
+  "endMs": 36352,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "отправляет",
+  "startMs": 36352,
+  "endMs": 37014,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "его",
+  "startMs": 37014,
+  "endMs": 37273,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "вам.",
+  "startMs": 37273,
+  "endMs": 37532,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "А",
+  "startMs": 38115,
+  "endMs": 38250,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "в",
+  "startMs": 38250,
+  "endMs": 38386,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "Telegram-канале",
+  "startMs": 38386,
+  "endMs": 39227,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "BEK",
+  "startMs": 39227,
+  "endMs": 39471,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "ESTATE",
+  "startMs": 39471,
+  "endMs": 39878,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "собраны",
+  "startMs": 39878,
+  "endMs": 40340,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "варианты",
+  "startMs": 40340,
+  "endMs": 40855,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "недвижимости",
+  "startMs": 40855,
+  "endMs": 41588,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "от",
+  "startMs": 41588,
+  "endMs": 41778,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "риелторов",
+  "startMs": 41778,
+  "endMs": 42347,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "в",
+  "startMs": 42347,
+  "endMs": 42483,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "одном",
+  "startMs": 42483,
+  "endMs": 42836,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "месте",
+  "startMs": 42836,
+  "endMs": 43189,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "с",
+  "startMs": 43501,
+  "endMs": 43651,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "быстрым",
+  "startMs": 43651,
+  "endMs": 44163,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "и",
+  "startMs": 44163,
+  "endMs": 44314,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "удобным",
+  "startMs": 44314,
+  "endMs": 44826,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "поиском.",
+  "startMs": 44826,
+  "endMs": 45338,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "Один",
+  "startMs": 46023,
+  "endMs": 46317,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "раз",
+  "startMs": 46317,
+  "endMs": 46557,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "задайте",
+  "startMs": 46557,
+  "endMs": 47011,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "параметры",
+  "startMs": 47011,
+  "endMs": 47573,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "и",
+  "startMs": 47910,
+  "endMs": 48046,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "новые",
+  "startMs": 48046,
+  "endMs": 48400,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "подходящие",
+  "startMs": 48400,
+  "endMs": 49025,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "квартиры",
+  "startMs": 49025,
+  "endMs": 49541,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "будут",
+  "startMs": 49541,
+  "endMs": 49895,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "находить",
+  "startMs": 49895,
+  "endMs": 50411,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "вас",
+  "startMs": 50411,
+  "endMs": 50656,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "сами.",
+  "startMs": 50656,
+  "endMs": 50955,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "Переходите",
+  "startMs": 51494,
+  "endMs": 52090,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "в",
+  "startMs": 52090,
+  "endMs": 52220,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "BEK",
+  "startMs": 52220,
+  "endMs": 52453,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "ESTATE,",
+  "startMs": 52453,
+  "endMs": 52842,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "запускайте",
+  "startMs": 53070,
+  "endMs": 53765,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "бота",
+  "startMs": 53765,
+  "endMs": 54098,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "и",
+  "startMs": 54098,
+  "endMs": 54249,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "подключайте",
+  "startMs": 54249,
+  "endMs": 55005,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "персональный",
+  "startMs": 55005,
+  "endMs": 55821,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "поиск",
+  "startMs": 55821,
+  "endMs": 56214,
+  "timestampMs": null,
+  "confidence": null
+ },
+ {
+  "text": "недвижимости.",
+  "startMs": 56214,
+  "endMs": 57030,
+  "timestampMs": null,
+  "confidence": null
+ }
+]

@@ -31,11 +31,12 @@ const words = m[1]
   .replace(/```[a-z]*\n?/g, "")
   .replace(/\[[A-ZА-ЯЁ/ ]+\]/g, " ")
   .replace(/(\d)\s+(\d{3})\b/g, "$1 $2") // «2 100» — одно слово
+  .replace(/\s+([—–-])(?=\s)/g, "$1") // отдельное тире «месте — с» → пауза после «месте—»
   .split(/\s+/)
   .filter((w) => /[\p{L}\p{N}]/u.test(w));
 const n = words.length;
 const weight = (w) => w.replace(/[^\p{L}\p{N}]/gu, "").length + 1.5;
-const punct = (w) => (/[.!?…]$/.test(w) ? 3 : /[:;—]$/.test(w) ? 2 : /,$/.test(w) ? 1 : 0);
+const punct = (w) => (/[.!?…»]$/.test(w) ? 3 : /[:;—–]$/.test(w) ? 2 : /,$/.test(w) ? 1 : 0);
 
 // --- паузы ---
 const out = await runFf(["-hide_banner", "-i", media, "-vn", "-af", "silencedetect=noise=-35dB:d=0.18", "-c:a", "pcm_s16le", "-f", "null", "-"]);
@@ -110,7 +111,7 @@ for (const g of groups) {
   let t = g.t0;
   ws.forEach((w) => {
     const d = ((g.t1 - g.t0) * weight(w)) / tot;
-    captions.push({ text: w.replace(/ /g, " "), startMs: Math.round(t * 1000), endMs: Math.round((t + d) * 1000), timestampMs: null, confidence: null });
+    captions.push({ text: w.replace(/\u00A0/g, " ").replace(/[—–]$/, ""), startMs: Math.round(t * 1000), endMs: Math.round((t + d) * 1000), timestampMs: null, confidence: null });
     t += d;
   });
 }

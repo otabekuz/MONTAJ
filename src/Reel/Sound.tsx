@@ -41,6 +41,23 @@ const overlaySounds = (o: Overlay, from: number, fps: number, frames: number, tl
           ]
         : [s(0.1, "tick", 0.3), s(0.35, "pop", 0.35)];
     case "broll": return [];
+    case "tg":
+      return [
+        s(0.05, "pop", 0.3),
+        ...(o.messages ?? []).flatMap((m) => [
+          { frame: tl.toFrame(m.at + (m.from === "user" ? (m.typeDur ?? 0) : 0)), sound: "pop" as const, volume: 0.32 },
+          ...(m.chips ?? []).map((c) => ({ frame: c.at !== undefined ? tl.toFrame(c.at) : tl.toFrame(m.at) + 6, sound: "tick" as const, volume: 0.3 })),
+        ]),
+        ...(o.search ? [{ frame: tl.toFrame(o.search.at), sound: "tick" as const, volume: 0.3 }] : []),
+        ...(o.tapAt !== undefined ? [{ frame: tl.toFrame(o.tapAt), sound: "pop" as const, volume: 0.4 }] : []),
+      ];
+    case "feed": return [s(0, "tick", 0.25), ...(o.aiAt !== undefined ? [{ frame: tl.toFrame(o.aiAt), sound: "shine" as const, volume: 0.4 }] : [])];
+    case "notify":
+      return [
+        ...(o.heroAt !== undefined ? [{ frame: tl.toFrame(o.heroAt), sound: "shine" as const, volume: 0.35 }] : []),
+        ...o.items.map((it) => ({ frame: tl.toFrame(it.at), sound: "pop" as const, volume: 0.45 })),
+      ];
+    case "days": return [...Array.from({ length: 7 }, (_, i) => s(0.15 + i * 0.25, "tick", 0.22)), ...(o.strikeAt !== undefined ? [{ frame: tl.toFrame(o.strikeAt), sound: "impact" as const, volume: 0.3 }] : [])];
     case "chip": return [s(0.05, "pop", 0.3), s(0.3, "tick", 0.2)];
     case "giant": return [s(0, "impact", 0.32), s(0.15, "shine", 0.18)];
   }
