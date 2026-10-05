@@ -1,0 +1,167 @@
+// Копия src/Reel/schema.ts — точный формат edit.json. Сгенерировано npm run pack-skill.
+import { z } from "zod";
+import type { Caption } from "@remotion/captions";
+
+// Все времена — в секундах исходного видео (до вырезки пауз, её делаем автоматически).
+const base = { at: z.number().min(0), dur: z.number().min(0.3) };
+
+export const overlaySchema = z.discriminatedUnion("type", [
+  // Карточка нейросети, когда её называют
+  z.object({ type: z.literal("tool"), ...base, name: z.string(), icon: z.string() }),
+  // Окно чата: печатается промпт, потом ответ
+  z.object({ type: z.literal("chat"), ...base, prompt: z.string(), answer: z.string() }),
+  // Сверху экран телефона, снизу спикер. image — файл из public/, пусто — макет чата.
+  // zoomTo — через ~1 с камера наезжает на область скриншота и обводит её красной рамкой
+  // (доли экрана телефона 0..1: x,y — левый верхний угол, w,h — размер).
+  z.object({
+    type: z.literal("screen"),
+    ...base,
+    title: z.string(),
+    image: z.string(),
+    zoomTo: z
+      .object({ x: z.number().min(0).max(1), y: z.number().min(0).max(1), w: z.number().min(0.02).max(1), h: z.number().min(0.02).max(1) })
+      .optional(),
+    // phone — вертикальный скриншот в телефоне; window — горизонтальный скриншот в широком окне
+    // (для window zoomTo — доли самого скриншота)
+    frame: z.enum(["phone", "window"]).optional(),
+  }),
+  // Шаги 01-02-03
+  z.object({ type: z.literal("steps"), ...base, title: z.string(), items: z.array(z.string()) }),
+  // Крупная цифра со счётчиком
+  z.object({
+    type: z.literal("number"),
+    ...base,
+    value: z.number(),
+    suffix: z.string(),
+    label: z.string(),
+  }),
+  // Акцент: слово «падает» в кадр с ударом
+  z.object({ type: z.literal("accent"), ...base, text: z.string(), emoji: z.string() }),
+  // Заголовок смыслового блока — крупная кинетическая типографика
+  z.object({ type: z.literal("title"), ...base, text: z.string(), sub: z.string() }),
+  // B-roll: видео или картинка из public/ (в split — верхняя половина, в full — весь кадр)
+  z.object({ type: z.literal("broll"), ...base, file: z.string() }),
+  // Иконки-понятия (1–3): визуальная метафора фразы. icon — ключ из src/Reel/fx/icons.tsx
+  z.object({
+    type: z.literal("icon"),
+    ...base,
+    items: z.array(z.object({ icon: z.string(), label: z.string() })).min(1).max(3),
+  }),
+  // Было / стало: неправильное перечёркивается, правильное — с галочкой
+  z.object({
+    type: z.literal("compare"),
+    ...base,
+    bad: z.string(),
+    good: z.string(),
+    badLabel: z.string(),
+    goodLabel: z.string(),
+  }),
+  // Схема-процесс A → B → C (2–4 блока), последний — результат
+  z.object({
+    type: z.literal("flow"),
+    ...base,
+    nodes: z.array(z.object({ label: z.string(), icon: z.string() })).min(2).max(4),
+  }),
+  // Смена «мира»: красная заливка на весь кадр и одно огромное чёрное слово (1 раз на ролик)
+  z.object({ type: z.literal("slam"), ...base, text: z.string(), em: z.string() }),
+  // Фраза набирается по словам со свечением; слова из em — курсив с засечками, красные
+  z.object({ type: z.literal("typed"), ...base, text: z.string(), em: z.string() }),
+  // Светлый «бумажный» мир: бланк с пунктами; mark "x" — зачеркнуть, "v" — галочка
+  z.object({
+    type: z.literal("paper"),
+    ...base,
+    tag: z.string(),
+    title: z.string(),
+    items: z.array(z.object({ text: z.string(), mark: z.enum(["x", "v", ""]) })).min(1).max(5),
+  }),
+  // Три одинаковых типовых сайта — «все на одно лицо» (объект-герой роликов про дизайн)
+  // marks — когда появляется подпись каждой копии (доля длительности 0..1), чтобы попасть в слова
+  z.object({
+    type: z.literal("clones"),
+    ...base,
+    labels: z.array(z.string()).max(3),
+    marks: z.array(z.number().min(0).max(1)).max(3).optional(),
+  }),
+  // Типовой сайт превращается в премиальный (красная линия-сканер)
+  z.object({ type: z.literal("morph"), ...base, before: z.string(), after: z.string() }),
+  // Ядро + модули: к центральному узлу по очереди подключаются 2–4 модуля, по линиям бежит свет
+  z.object({ type: z.literal("hub"), ...base, center: z.string(), items: z.array(z.string()).min(1).max(4) }),
+  // График из столбиков — только реальные цифры
+  z.object({
+    type: z.literal("chart"),
+    ...base,
+    title: z.string(),
+    unit: z.string(),
+    bars: z.array(z.object({ label: z.string(), value: z.number().min(0), highlight: z.boolean() })).min(2).max(4),
+  }),
+]);
+
+export const zoomSchema = z.object({
+  at: z.number().min(0),
+  dur: z.number().min(0.2),
+  scale: z.number().min(1).max(1.6),
+});
+
+// Переходы между смысловыми блоками
+export const transitionSchema = z.object({
+  at: z.number().min(0),
+  type: z.enum(["whip", "wipe", "flash", "glitch", "smear"]),
+});
+
+// Отдельные звуковые акценты: riser заканчивается ровно в `at` (нарастание в момент),
+// остальные звуки начинаются в `at`.
+export const cueSchema = z.object({
+  at: z.number().min(0),
+  sound: z.enum(["riser", "impact", "shine", "glitch", "pop"]),
+  volume: z.number().min(0).max(1),
+});
+
+export const reelSchema = z.object({
+  // full — спикер на весь экран; split — спикер снизу, монтаж сверху;
+  // voice — спикера в кадре нет: графика на весь экран + голос (videoFile — аудио: mp3/wav/m4a)
+  layout: z.enum(["full", "split", "voice"]),
+  // Файл лежит в папке public/ (в voice — аудиофайл с голосом)
+  videoFile: z.string(),
+  // Субтитры, созданные скриптом `npm run transcribe` (тоже в public/)
+  captionsFile: z.string(),
+  // Длина ролика, если видео ещё нет (заглушка / демо)
+  fallbackSeconds: z.number().min(1),
+  // Автоматически вырезать паузы между фразами
+  cutPauses: z.boolean(),
+  // Ускорение речи (высота голоса сохраняется). 1.1–1.2 — бодрый темп Reels для медленного аватара
+  speed: z.number().min(0.8).max(1.5),
+  // «Тишина как приём»: секунды слов, перед которыми пауза НЕ вырезается (до 0.7 с),
+  // а музыка в ней затихает. 0–1 раз на ролик, перед главной мыслью.
+  beats: z.array(z.number().min(0)),
+  // Фраза-хук в первые секунды
+  hook: z.string(),
+  hookSeconds: z.number().min(0.5).max(6),
+  // Слова, которые подсвечиваются в хуке и субтитрах
+  highlightWords: z.array(z.string()),
+  // Графика, приближения, переходы
+  overlays: z.array(overlaySchema),
+  zooms: z.array(zoomSchema),
+  transitions: z.array(transitionSchema),
+  cues: z.array(cueSchema),
+  // Смена плана (общий/крупный) на каждой новой фразе
+  autoFraming: z.boolean(),
+  // Звуки и музыка (файл из public/, пусто — без музыки)
+  sfx: z.boolean(),
+  musicFile: z.string(),
+  // Кодовое слово / призыв в конце. Пусто — концовки нет.
+  cta: z.string(),
+  ctaSeconds: z.number().min(1).max(6),
+});
+
+export type Overlay = z.infer<typeof overlaySchema>;
+export type Zoom = z.infer<typeof zoomSchema>;
+export type Transition = z.infer<typeof transitionSchema>;
+export type Cue = z.infer<typeof cueSchema>;
+// Кусок исходного видео, который остаётся после вырезки пауз (секунды)
+export type Segment = { from: number; to: number };
+
+export type ReelProps = z.infer<typeof reelSchema> & {
+  captions?: Caption[];
+  hasVideo?: boolean;
+  segments?: Segment[];
+};

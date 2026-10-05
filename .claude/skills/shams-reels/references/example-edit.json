@@ -1,0 +1,230 @@
+{
+  "layout": "voice",
+  "videoFile": "reels/dizayn-skills.mp3",
+  "captionsFile": "reels/dizayn-skills.captions.json",
+  "fallbackSeconds": 62,
+  "cutPauses": true,
+  "speed": 1.25,
+  "beats": [],
+  "cues": [
+    {
+      "at": 9.76,
+      "sound": "riser",
+      "volume": 0.35
+    }
+  ],
+  "hook": "Nega bir xil?",
+  "hookSeconds": 2.6,
+  "highlightWords": [
+    "promptingizda",
+    "didi",
+    "Taste",
+    "Skill.",
+    "Max.",
+    "Impeccable.",
+    "DIZAYN",
+    "skill"
+  ],
+  "autoFraming": false,
+  "zooms": [],
+  "transitions": [
+    {
+      "at": 7.95,
+      "type": "smear"
+    },
+    {
+      "at": 20.62,
+      "type": "flash"
+    },
+    {
+      "at": 26.35,
+      "type": "smear"
+    },
+    {
+      "at": 33.58,
+      "type": "smear"
+    },
+    {
+      "at": 42.15,
+      "type": "smear"
+    },
+    {
+      "at": 49.15,
+      "type": "flash"
+    }
+  ],
+  "overlays": [
+    {
+      "type": "clones",
+      "at": 0.2,
+      "dur": 7.4,
+      "labels": [
+        "Binafsha gradient",
+        "Bir xil shrift",
+        "Bir xil kartalar"
+      ],
+      "marks": [
+        0.34,
+        0.63,
+        0.8
+      ]
+    },
+    {
+      "type": "typed",
+      "at": 8,
+      "dur": 1.65,
+      "text": "Muammo AI'da emas",
+      "em": "emas"
+    },
+    {
+      "type": "slam",
+      "at": 9.7,
+      "dur": 1.8,
+      "text": "PROMPT",
+      "em": "sizning promptingizda"
+    },
+    {
+      "type": "chat",
+      "at": 11.6,
+      "dur": 2.25,
+      "prompt": "Chiroyli sayt yarat",
+      "answer": ""
+    },
+    {
+      "type": "clones",
+      "at": 13.95,
+      "dur": 3.85,
+      "labels": [
+        "nusxa",
+        "nusxa",
+        "nusxa"
+      ],
+      "marks": [
+        0.3,
+        0.38,
+        0.46
+      ]
+    },
+    {
+      "type": "typed",
+      "at": 18,
+      "dur": 2.5,
+      "text": "Dizayn didi berilmagan",
+      "em": "didi"
+    },
+    {
+      "type": "title",
+      "at": 20.68,
+      "dur": 2.1,
+      "text": "O'zgartirish mumkin",
+      "sub": "lekin"
+    },
+    {
+      "type": "hub",
+      "at": 22.9,
+      "dur": 3.4,
+      "center": "Claude",
+      "items": [
+        "Skill",
+        "Skill",
+        "Skill"
+      ]
+    },
+    {
+      "type": "title",
+      "at": 26.4,
+      "dur": 1.95,
+      "text": "Taste Skill",
+      "sub": "01"
+    },
+    {
+      "type": "screen",
+      "at": 28.4,
+      "dur": 5.1,
+      "title": "github.com/Leonxlnx/taste-skill",
+      "image": "reels/dizayn-skills/taste.png",
+      "frame": "window",
+      "zoomTo": {
+        "x": 0.725,
+        "y": 0.265,
+        "w": 0.24,
+        "h": 0.11
+      }
+    },
+    {
+      "type": "title",
+      "at": 33.64,
+      "dur": 3.1,
+      "text": "UI UX Pro Max",
+      "sub": "02"
+    },
+    {
+      "type": "screen",
+      "at": 36.84,
+      "dur": 5.2,
+      "title": "github.com/nextlevelbuilder/ui-ux-pro-max-skill",
+      "image": "reels/dizayn-skills/uiux.png",
+      "frame": "window",
+      "zoomTo": {
+        "x": 0.725,
+        "y": 0.265,
+        "w": 0.24,
+        "h": 0.11
+      }
+    },
+    {
+      "type": "title",
+      "at": 42.2,
+      "dur": 2.1,
+      "text": "Impeccable",
+      "sub": "03"
+    },
+    {
+      "type": "paper",
+      "at": 44.4,
+      "dur": 4.7,
+      "tag": "IMPECCABLE",
+      "title": "sayqallaydi",
+      "items": [
+        {
+          "text": "Shriftlar",
+          "mark": "v"
+        },
+        {
+          "text": "Masofalar",
+          "mark": "v"
+        },
+        {
+          "text": "Layout",
+          "mark": "v"
+        },
+        {
+          "text": "Animatsiya",
+          "mark": "v"
+        }
+      ]
+    },
+    {
+      "type": "morph",
+      "at": 49.2,
+      "dur": 5.5,
+      "before": "shunchaki sayt",
+      "after": "dizayn bilan"
+    },
+    {
+      "type": "hub",
+      "at": 54.92,
+      "dur": 2.5,
+      "center": "Claude",
+      "items": [
+        "Taste",
+        "UI UX Pro",
+        "Impeccable"
+      ]
+    }
+  ],
+  "sfx": true,
+  "musicFile": "",
+  "cta": "Kommentga DIZAYN deb yozing",
+  "ctaSeconds": 3.3
+}
