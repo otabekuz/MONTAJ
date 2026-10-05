@@ -175,6 +175,8 @@ export const overlaySchema = z.discriminatedUnion("type", [
     ...base,
     heroAt: z.number().min(0).optional(),
     heroLabel: z.string().optional(),
+    // настоящее фото объекта (файл в public/) вместо иллюстрации
+    heroImage: z.string().optional(),
     clock: z.string().optional(),
     dateLabel: z.string().optional(),
     items: z.array(z.object({ at: z.number().min(0), title: z.string(), text: z.string(), time: z.string().optional() })).max(3),
