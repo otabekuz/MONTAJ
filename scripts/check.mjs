@@ -8,7 +8,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { bundle } from "@remotion/bundler";
-import { renderStill, selectComposition } from "@remotion/renderer";
+import { openBrowser, renderStill, selectComposition } from "@remotion/renderer";
 import { browserOptions } from "./lib/env.mjs";
 
 const args = process.argv.slice(2);
@@ -27,7 +27,9 @@ if (palette) inputProps.palette = palette;
 
 console.log("Сборка проекта…");
 const serveUrl = await bundle({ entryPoint: path.resolve("src/index.ts") });
-const composition = await selectComposition({ serveUrl, id: compositionId, inputProps, ...browserOptions() });
+// один браузер на все кадры: на Windows повторный запуск браузера на каждый кадр падает («Failed to launch the browser process»)
+const puppeteerInstance = await openBrowser("chrome", browserOptions());
+const composition = await selectComposition({ serveUrl, id: compositionId, inputProps, puppeteerInstance });
 console.log(`${compositionId}: ${(composition.durationInFrames / composition.fps).toFixed(1)} с, ${composition.durationInFrames} кадров`);
 
 fs.mkdirSync("out", { recursive: true });
@@ -52,7 +54,8 @@ for (const arg of frameArgs) {
         : parseInt(arg, 10),
   );
   const output = path.join("out", `${target}-check-${palette ? `${palette}-` : ""}${frame}.png`);
-  await renderStill({ serveUrl, composition, frame, output, inputProps, scale: 0.5, ...browserOptions() });
+  await renderStill({ serveUrl, composition, frame, output, inputProps, scale: 0.5, puppeteerInstance });
   console.log(`  ${output}`);
 }
+await puppeteerInstance.close({ silent: true });
 console.log("Готово");

@@ -39,7 +39,9 @@ try {
     "-c:v", "libx264", "-preset", "medium", "-crf", "18",
     "-g", "30", "-keyint_min", "30", "-sc_threshold", "0",
     "-pix_fmt", "yuv420p",
-    "-c:a", "aac", "-b:a", "192k", "-ar", "48000", "-ac", "2",
+    // пересчёт звука фильтром: "-ar 48000 -ac 2" роняет ffmpeg Remotion на Windows (0xC0000005) на звуке iPhone 44,1 кГц
+    "-af", "aresample=48000,aformat=sample_rates=48000:channel_layouts=stereo",
+    "-c:a", "aac", "-b:a", "192k",
     "-movflags", "+faststart",
     tmp,
   ]);

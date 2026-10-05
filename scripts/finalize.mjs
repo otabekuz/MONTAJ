@@ -15,7 +15,7 @@ export const finalize = async (file) => {
   // TP с запасом: кодирование в AAC добавляет ~0,4 дБ к пикам
   const filter = `loudnorm=I=-14:TP=-2:LRA=11:measured_I=${m.input_i}:measured_TP=${m.input_tp}:measured_LRA=${m.input_lra}:measured_thresh=${m.input_thresh}:offset=${m.target_offset}:linear=${linear}`;
   try {
-    await runFf(["-y", "-hide_banner", "-i", file, "-c:v", "copy", "-af", filter, "-ar", "48000", "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart", tmp]);
+    await runFf(["-y", "-hide_banner", "-i", file, "-c:v", "copy", "-af", `${filter},aresample=48000`, "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart", tmp]);
     fs.renameSync(tmp, file);
   } catch (e) {
     fs.rmSync(tmp, { force: true });

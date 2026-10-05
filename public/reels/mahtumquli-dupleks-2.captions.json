@@ -1,0 +1,9 @@
+[
+ { "text": "Mahtumquli", "startMs": 270, "endMs": 840, "timestampMs": null, "confidence": null },
+ { "text": "ko'chasida", "startMs": 1007, "endMs": 1400, "timestampMs": null, "confidence": null },
+ { "text": "joylashgan", "startMs": 1400, "endMs": 2100, "timestampMs": null, "confidence": null },
+ { "text": "novastroykada", "startMs": 2100, "endMs": 2880, "timestampMs": null, "confidence": null },
+ { "text": "dupleks", "startMs": 2880, "endMs": 3370, "timestampMs": null, "confidence": null },
+ { "text": "xonadon", "startMs": 3370, "endMs": 3940, "timestampMs": null, "confidence": null },
+ { "text": "ko'rsatamiz.", "startMs": 3940, "endMs": 4870, "timestampMs": null, "confidence": null }
+]

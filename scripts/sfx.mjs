@@ -4,7 +4,8 @@
 import fs from "node:fs";
 import path from "node:path";
 
-const SR = 44100;
+// 48 кГц, как у ролика: пересчёт частоты в ffmpeg Remotion на Windows падает (0xC0000005)
+const SR = 48000;
 const OUT = path.join(process.cwd(), "public", "sfx");
 
 let seed = 12345;

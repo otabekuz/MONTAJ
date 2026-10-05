@@ -1,0 +1,36 @@
+{
+  "layout": "full",
+  "lang": "uz",
+  "palette": "sky",
+  "videoFile": "reels/mahtumquli-dupleks.mp4",
+  "subjectFile": "reels/mahtumquli-dupleks.person.webm",
+  "captionsFile": "reels/mahtumquli-dupleks.captions.json",
+  "captionStyle": "layered",
+  "captionY": 0.5,
+  "grade": true,
+  "fallbackSeconds": 6.1,
+  "cutPauses": true,
+  "speed": 1,
+  "beats": [],
+  "cues": [{ "at": 3.93, "sound": "riser", "volume": 0.28 }],
+  "hook": "",
+  "hookSeconds": 0.5,
+  "highlightWords": ["novastroykadan", "ko'rsatamiz"],
+  "autoFraming": false,
+  "zooms": [{ "at": 0.95, "dur": 2.9, "scale": 1.05 }, { "at": 3.93, "dur": 1.5, "scale": 1.12 }],
+  "transitions": [
+    { "at": 1.0, "type": "leak" },
+    { "at": 3.92, "type": "flash" }
+  ],
+  "overlays": [
+    { "type": "giant", "at": 0.92, "dur": 1.42, "text": "Mahtumquli", "color": "metal", "y": 0.3 },
+    { "type": "chip", "at": 1.05, "dur": 1.88, "icon": "location", "text": "Mahtumquli ko'chasi" },
+    { "type": "chip", "at": 2.99, "dur": 0.9, "icon": "newbuild", "text": "Novostroyka" },
+    { "type": "giant", "at": 3.9, "dur": 1.8, "text": "DUPLEKS", "color": "accent", "italic": true, "y": 0.3 },
+    { "type": "chip", "at": 4.45, "dur": 1.25, "icon": "duplex", "text": "Dupleks xonadon" }
+  ],
+  "sfx": true,
+  "musicFile": "",
+  "cta": "",
+  "ctaSeconds": 2.6
+}
