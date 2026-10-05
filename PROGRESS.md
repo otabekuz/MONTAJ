@@ -15,13 +15,13 @@
 - [x] Команды: `ingest`, `transcribe`, `align`, `new-reel`, `check`, `build-reel`, `finalize`, `sfx`, `pack-skill`.
 - [x] Агенты `reel-scriptwriter`, `reel-editor` (`.claude/agents/`).
 - [x] 4 светлые палитры: `sky`, `champagne`, `sage`, `blush` (+ исходная `monolith`).
-- [ ] Владелец выбирает палитру.
+- [x] Палитра: `sky` («Небо») — по умолчанию для всех роликов (владелец доверил выбор, 2026-10-05).
 - [x] Первый ролик `dorogoy-rayon` собран (субтитры по паузам — `estimate-captions`).
 - [~] `transcribe` переведён на whisper.cpp **1.7.6** (DTW-пресет `large.v3.turbo` → точные тайминги слов; в 1.5.5 его не было,
       тайминги «размазывались»). Программа ставится в `whisper.cpp-1.7.6/` (на Windows из `Release/` переносится в `build/bin/`),
       модель берётся из `whisper.cpp/` — заново не качается. Проверено в облаке до шага модели; **проверить на компьютере владельца**.
 - [x] Эффект «слово за спиной»: `npm run matte` (MediaPipe) + система субтитров layered — демо `uy-demo`.
-- [ ] Лицензионная музыка в `public/music/` — по желанию владельца.
+- [x] Музыка: своя, синтезированная (`npm run music`) — `public/music/montaj-calm.webm` (спокойные ролики) и `montaj-pulse.webm` (динамичные), 96 BPM, петля 60 с, лицензий не требует.
 
 ## Принятые решения
 - Субтитры — по образцу `docs/subtitle-style-reference.png`: белый жирный Inter Tight, две строки по центру

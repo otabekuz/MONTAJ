@@ -46,7 +46,8 @@
     "new-reel": "node scripts/new-reel.mjs",
     "pack-skill": "node scripts/pack-skill.mjs",
     "estimate-captions": "node scripts/estimate-captions.mjs",
-    "matte": "node scripts/matte.mjs"
+    "matte": "node scripts/matte.mjs",
+    "music": "node scripts/music.mjs"
   },
   "allowScripts": {
     "esbuild@0.28.1": true

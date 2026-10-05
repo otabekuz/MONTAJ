@@ -290,7 +290,7 @@
     }
   ],
   "sfx": true,
-  "musicFile": "",
+  "musicFile": "music/montaj-pulse.webm",
   "cta": "BEK ESTATE в Telegram",
   "ctaSeconds": 3.2
 }
