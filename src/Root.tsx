@@ -1,57 +1,38 @@
-import "./index.css";
 import { Composition, Folder } from "remotion";
-import { HelloWorld } from "./HelloWorld";
-import { Logo } from "./HelloWorld/Logo";
-import { Title } from "./HelloWorld/Title";
+import { demoFull, demoSplit, demoVoice } from "./Reel/demo";
+import { FPS, H, W } from "./Reel/layout";
+import { calculateReelMetadata } from "./Reel/meta";
+import { Reel } from "./Reel/Reel";
+import { type ReelProps, reelSchema } from "./Reel/schema";
 
-// Each <Composition> is an entry in the sidebar!
+// Reel — настоящий ролик: план передаётся через --props=reels/<slug>/edit.json.
+// Демо — проверка элементов и палитр без видео (цифры в демо условные).
+
+const reelDefaults: ReelProps = (() => {
+  const d = demoFull("uz", "sky");
+  return { ...d, captions: undefined };
+})();
 
 export const RemotionRoot: React.FC = () => {
   return (
     <>
-      <Folder name="Elements">
-        <Composition
-          id="Logo"
-          component={Logo}
-          durationInFrames={150}
-          fps={30}
-          width={1920}
-          height={1080}
-          defaultProps={{
-            logoColor1: "#91EAE4",
-            logoColor2: "#86A8E7",
-          }}
-        />
-        <Composition
-          id="Title"
-          component={Title}
-          durationInFrames={115}
-          fps={30}
-          width={1920}
-          height={1080}
-          defaultProps={{
-            titleText: "Welcome to Remotion",
-            titleColor: "#000000",
-          }}
-        />
-      </Folder>
       <Composition
-        // You can take the "id" to render a video:
-        // bunx remotion render HelloWorld
-        id="HelloWorld"
-        component={HelloWorld}
-        durationInFrames={150}
-        fps={30}
-        width={1920}
-        height={1080}
-        // You can override these props for each render:
-        // https://www.remotion.dev/docs/parametrized-rendering
-        defaultProps={{
-          titleText: "Welcome to Remotion",
-          titleColor: "#000000",
-        }}
+        id="Reel"
+        component={Reel}
+        schema={reelSchema}
+        defaultProps={reelDefaults}
+        calculateMetadata={calculateReelMetadata}
+        durationInFrames={FPS * 20}
+        fps={FPS}
+        width={W}
+        height={H}
       />
-
+      <Folder name="Demo">
+        <Composition id="ReelDemo" component={Reel} defaultProps={demoFull("uz", "sky")} calculateMetadata={calculateReelMetadata} durationInFrames={FPS * 20} fps={FPS} width={W} height={H} />
+        <Composition id="ReelDemoRu" component={Reel} defaultProps={demoFull("ru", "champagne")} calculateMetadata={calculateReelMetadata} durationInFrames={FPS * 20} fps={FPS} width={W} height={H} />
+        <Composition id="ReelDemoSplit" component={Reel} defaultProps={demoSplit("sky")} calculateMetadata={calculateReelMetadata} durationInFrames={FPS * 20} fps={FPS} width={W} height={H} />
+        <Composition id="ReelDemoVoice" component={Reel} defaultProps={demoVoice("sky")} calculateMetadata={calculateReelMetadata} durationInFrames={FPS * 20} fps={FPS} width={W} height={H} />
+      </Folder>
     </>
   );
 };
