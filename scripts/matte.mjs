@@ -48,7 +48,8 @@ try {
     serveUrl,
     composition,
     inputProps,
-    codec: "vp8",
+    // VP8 с альфой даёт серые блоки на лице и руках при движении (mahtumquli-dupleks, 4.3 с) — VP9 чистый
+    codec: "vp9",
     imageFormat: "png",
     pixelFormat: "yuva420p",
     crf: 10,

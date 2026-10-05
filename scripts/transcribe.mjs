@@ -29,7 +29,8 @@ const wav = path.resolve(`${base}.16k.tmp.wav`);
 const out = `${base}.captions.json`;
 
 console.log("Готовлю звук 16 кГц…");
-await runFf(["-y", "-i", src, "-vn", "-ar", "16000", "-ac", "1", "-c:a", "pcm_s16le", wav]);
+// пересчёт фильтром: "-ar/-ac" роняют ffmpeg Remotion на Windows (0xC0000005)
+await runFf(["-y", "-i", src, "-vn", "-af", "aresample=16000,aformat=sample_rates=16000:channel_layouts=mono", "-c:a", "pcm_s16le", wav]);
 
 console.log("whisper.cpp…");
 await installWhisperCpp({ to: WHISPER_DIR, version: VERSION, printOutput: false });
@@ -53,7 +54,8 @@ const result = await transcribe({
   whisperPath: WHISPER_DIR,
   whisperCppVersion: VERSION,
   model: MODEL,
-  tokenLevelTimestamps: true,
+  // whisper.cpp 1.5.5 не знает DTW-пресет large.v3.turbo («unknown DTW preset») — для turbo тайминги по токенам
+  tokenLevelTimestamps: !MODEL.includes("turbo"),
   language: lang,
   onProgress: (p) => {
     const pct = Math.floor(p * 10) * 10;
