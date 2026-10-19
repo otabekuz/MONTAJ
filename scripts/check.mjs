@@ -4,6 +4,7 @@
 //   npm run check -- ReelDemoSplit 60 200 400
 //   npm run check -- kvartira-yunusobod @10.2 @31.5       (@ — секунды ИСХОДНИКА, как в edit.json)
 //   npm run check -- ReelDemo 60 --palette=champagne     (сравнить палитры)
+//   npm run check -- obzor-yunusobod t1 t2 c3            (Tour: t<k> — середина k-го перехода, c<k> — середина k-го клипа, с 1)
 // Результат: out/<slug>-check-<кадр>.png (уменьшенные вдвое).
 import fs from "node:fs";
 import path from "node:path";
@@ -21,8 +22,8 @@ if (!target || frameArgs.length === 0) {
 
 const editPath = path.join("reels", target, "edit.json");
 const isSlug = fs.existsSync(editPath);
-const compositionId = isSlug ? "Reel" : target;
-const inputProps = isSlug ? JSON.parse(fs.readFileSync(editPath, "utf8")) : {};
+const inputProps = fs.existsSync(editPath) ? JSON.parse(fs.readFileSync(editPath, "utf8")) : {};
+const compositionId = isSlug ? (inputProps.layout === "tour" ? "Tour" : "Reel") : target;
 if (palette) inputProps.palette = palette;
 
 console.log("Сборка проекта…");
@@ -44,10 +45,20 @@ const sourceToFrame = (t) => {
   }
   return Math.round(acc * composition.fps);
 };
+// Tour: t<k> — стык клипов k и k+1, c<k> — середина клипа k (нумерация с 1)
+const tourFrame = (arg) => {
+  const r = composition.props.resolved ?? [];
+  const k = parseInt(arg.slice(1), 10) - 1;
+  if (!r[k]) return 0;
+  const t = arg[0] === "t" ? (r[k + 1]?.start ?? r[k].start + r[k].dur) : r[k].start + r[k].dur / 2;
+  return Math.round(t * composition.fps);
+};
 for (const arg of frameArgs) {
   const frame = Math.min(
     composition.durationInFrames - 1,
-    arg.startsWith("@")
+    /^[tc]\d+$/.test(arg)
+      ? tourFrame(arg)
+      : arg.startsWith("@")
       ? sourceToFrame(parseFloat(arg.slice(1)))
       : arg.endsWith("s")
         ? Math.round(parseFloat(arg) * composition.fps)

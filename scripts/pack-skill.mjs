@@ -4,7 +4,9 @@
 //   .claude/agents/reel-scriptwriter.md → references/script.md
 //   src/Reel/schema.ts                  → references/schema.ts
 //   docs/example-edit.json              → references/example-edit.json
-// SKILL.md и references/pipeline.md пишутся руками прямо в скилле.
+//   src/Tour/schema.ts                  → references/tour-schema.ts (обзор объекта)
+//   docs/example-tour.json              → references/example-tour.json
+// SKILL.md, references/pipeline.md и references/tour.md пишутся руками прямо в скилле.
 // Затем пакует dist/montaj-reels.skill (zip). С --global ещё копирует скилл в ~/.claude/skills/.
 import fs from "node:fs";
 import os from "node:os";
@@ -41,6 +43,11 @@ fs.writeFileSync(
   `// Копия src/Reel/schema.ts — точный формат edit.json. Сгенерировано npm run pack-skill.\n${read("src/Reel/schema.ts")}`,
 );
 if (fs.existsSync("docs/example-edit.json")) fs.copyFileSync("docs/example-edit.json", path.join(REF, "example-edit.json"));
+fs.writeFileSync(
+  path.join(REF, "tour-schema.ts"),
+  `// Копия src/Tour/schema.ts — формат edit.json обзора объекта ("layout": "tour"). Сгенерировано npm run pack-skill.\n${read("src/Tour/schema.ts")}`,
+);
+if (fs.existsSync("docs/example-tour.json")) fs.copyFileSync("docs/example-tour.json", path.join(REF, "example-tour.json"));
 console.log(`Справочники → ${REF}`);
 
 // --- zip (без сжатия зависимостей: deflate из zlib) ---

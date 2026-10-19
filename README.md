@@ -23,6 +23,16 @@ npm run check -- kvartira-yunusobod 2s 8s 15s                   # проверо
 npm run build-reel -- kvartira-yunusobod                        # → out/<slug>.mp4 и out/<slug>-cover.jpg
 ```
 
+Обзор объекта без речи (стиль «одним дублем», формат Tour):
+
+```powershell
+npm run tour-ingest -- obzor-yunusobod "C:\путь\к\папке-с-клипами"   # клипы → public/reels/obzor-yunusobod/
+npm run tour-scan -- obzor-yunusobod                                   # разбор: тряска, нерезко, пересвет → out/scan/
+npm run new-reel -- obzor-yunusobod tour uz                            # заготовка плана
+npm run check -- obzor-yunusobod t1 t2 c3                              # кадры переходов и клипов
+npm run build-reel -- obzor-yunusobod                                  # → out/obzor-yunusobod.mp4
+```
+
 Обычно всё это делает Claude по скиллу — достаточно написать «рилсым <идея>» или прислать видео.
 
 ## Что внутри
@@ -31,6 +41,7 @@ npm run build-reel -- kvartira-yunusobod                        # → out/<slug>
 |---|---|
 | `src/Reel/` | движок: композиция `Reel`, форматы full / split / voice, субтитры, камера, переходы, звук |
 | `src/Reel/fx/` | 20 элементов: заголовки, карточка объекта, локация, «металлическая» цифра, объявление-герой, чек-лист и др. |
+| `src/Tour/` | формат Tour — обзор объекта: ускорения, скрытые склейки, бит, петля (разбор образцов — `docs/tour-reference.md`) |
 | `src/Reel/theme.ts` | палитры `sky`, `champagne`, `sage`, `blush` — сравнение в `docs/palettes.png` |
 | `scripts/` | команды конвейера (`npm run …`) |
 | `.claude/agents/` | агенты: сценарист и монтажёр |

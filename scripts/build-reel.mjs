@@ -1,5 +1,5 @@
 // npm run build-reel -- <slug>
-// Рендер reels/<slug>/edit.json → громкость −14 LUFS → обложка.
+// Рендер reels/<slug>/edit.json (композиция Reel, а при "layout": "tour" — Tour) → громкость −14 LUFS → обложка.
 // Результат: out/<slug>.mp4 и out/<slug>-cover.jpg. «Готово» печатается ТОЛЬКО при полном успехе;
 // при сбое старый out/<slug>.mp4 удаляется, чтобы владельцу не ушла устаревшая версия.
 // При ошибке чтения кадров видео сам повторяет рендер с 2, затем с 1 потоком.
@@ -36,8 +36,12 @@ try {
   const inputProps = JSON.parse(fs.readFileSync(editPath, "utf8"));
   console.log("Сборка проекта…");
   const serveUrl = await bundle({ entryPoint: path.resolve("src/index.ts") });
-  const composition = await selectComposition({ serveUrl, id: "Reel", inputProps, ...browserOptions() });
-  if (!composition.props.hasVideo) {
+  const tour = inputProps.layout === "tour";
+  const composition = await selectComposition({ serveUrl, id: tour ? "Tour" : "Reel", inputProps, ...browserOptions() });
+  if (tour) {
+    const missing = composition.props.resolved.findIndex((r) => r.fileDur === 0);
+    if (missing >= 0) throw new Error(`Не найден клип public/${inputProps.clips[missing].file} — сначала npm run tour-ingest.`);
+  } else if (!composition.props.hasVideo) {
     throw new Error(`Не найден исходник public/${inputProps.videoFile} — сначала npm run ingest.`);
   }
   console.log(`Ролик: ${(composition.durationInFrames / composition.fps).toFixed(1)} с`);
@@ -79,7 +83,8 @@ try {
   fs.renameSync(tmp, out);
 
   console.log("Обложка…");
-  const frame = Math.min(composition.durationInFrames - 1, Math.round(inputProps.hookSeconds * 0.6 * composition.fps));
+  const coverSec = tour ? (inputProps.coverAt ?? 0.4) : inputProps.hookSeconds * 0.6;
+  const frame = Math.min(composition.durationInFrames - 1, Math.round(coverSec * composition.fps));
   await renderStill({ serveUrl, composition, frame, output: cover, inputProps, imageFormat: "jpeg", jpegQuality: 92, ...browserOptions() });
 
   console.log(`→ ${out}\n→ ${cover}`);

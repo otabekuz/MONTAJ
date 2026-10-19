@@ -25,7 +25,10 @@
 | `npm run music` | синтезирует свою фоновую музыку → `public/music/montaj-calm.webm`, `montaj-pulse.webm` (96 BPM, ля минор, петля 60 с, Opus 48 кГц, одинаковая громкость) | музыка без лицензий; в git уже лежит — запускать только после правки генератора |
 | `npm run sfx` | пересобирает звуки в `public/sfx/` (синтез, без скачивания) | после изменения набора звуков |
 | `npm run pack-skill [-- --global]` | пересобирает справочники скилла из правил агентов и схемы, пакует `dist/montaj-reels.skill`; `--global` — копия в `~/.claude/skills/` | после любой правки правил в `.claude/agents/` или схемы |
-| `npm run dev` | Remotion Studio: `Reel` и демо (`ReelDemo`, `ReelDemoRu`, `ReelDemoSplit`, `ReelDemoVoice`) | посмотреть элементы и палитры вживую |
+| `npm run tour-ingest -- <slug> "<папка или файлы>"` | клипы обзора → `public/reels/<slug>/clip-NN.mp4`: 1080×1920, до 60 к/с, HDR iPhone → обычный цвет, без звука, ключевой кадр каждые 0,5 с; список — `reels/<slug>/clips.json` | формат Tour (обзор без речи), подробно — `tour.md` |
+| `npm run tour-scan -- <slug \| файл>` | разбор материала по 0,5 с: тряска, нерезкость, пересвет, темнота, статика, резкие повороты → `out/scan/*.txt` + лист кадров с временем `out/scan/*.png` | найти неудачные места до монтажа и честно сказать владельцу |
+| `npm run beats -- music/<трек>` | темп и удары трека (ровная сетка) → `public/music/<трек>.beats.json` (`beats`, `bars` — сильные доли) | ставить склейки обзора на удары (`beatsFile`, `beatSync`) |
+| `npm run dev` | Remotion Studio: `Reel`, `Tour` и демо (`ReelDemo`, `ReelDemoRu`, `ReelDemoSplit`, `ReelDemoVoice`) | посмотреть элементы и палитры вживую |
 | `npm run lint` | ESLint + TypeScript | после изменения кода |
 
 На Windows в PowerShell, если `npm` ругается «выполнение сценариев отключено»: один раз `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned`. ffmpeg отдельно ставить не нужно — используется тот, что идёт с Remotion.
@@ -74,12 +77,17 @@
 - Голос ElevenLabs даёт пики выше −1,5 dBTP: `finalize` сам переключается на динамическую нормализацию.
 - Ролик о районах: карта `districts` — сильный герой; повторять её 3–4 раза с разными состояниями (поиск → №1 → топ-3 → другой сегмент), между ними — цифра, факторы (`hub` по словам), удар.
 
+- ffmpeg из Remotion урезан: нет фильтров `fps`, `tile`, `drawtext` и формата `rawvideo`. Частота — ключом `-r`, сырые кадры — `-c:v rawvideo -f image2pipe`; есть `zscale` и `tonemap` (HDR → SDR).
+- Tour: время клипа «замораживается» через `<Freeze>` над `OffthreadVideo` — дробные кадры работают, поэтому скорость меняется плавно внутри клипа. Смаз на ускорении — смешивание 2–5 соседних кадров исходника.
+- Remotion **зажимает номер кадра в пределах длины ролика**: `<Freeze frame>` больше длины композиции показывает последний допустимый кадр — клип «застывает». Поэтому в `ClipLayer` время сжимается `playbackRate`: кадр = сек × 30 / rate (тест `tour-demo`: 15,7-секундный ролик брал кадры с 17–33 с исходника и застыл на 5 с).
+
 ## 5. Устройство кода
 - `src/Reel/schema.ts` — формат `edit.json` (источник истины). `src/Reel/Reel.tsx` — слои ролика. `src/Reel/meta.ts` — длина ролика, загрузка субтитров, вырезка пауз до рендера.
 - `src/Reel/Matte.tsx` — композиция вырезки (MediaPipe selfie multiclass в браузере рендера); `src/Reel/LayeredCaptions.tsx` — субтитры layered (уровни 2–3); `src/Reel/fx/Giant.tsx` — гигант (уровень 1); слои: видео → гиганты → вырезка человека (`Speaker.tsx`, `middle` + `subjectFile`) → субтитры.
 - `src/Reel/fx/` — элементы: Title, Accent, Typed, Slam, ToolCard, ChatPrompt, Steps, BigNumber, ScreenInsert, Broll, Concept (icon), Compare, Flow, Chart, Paper, Sites (clones, morph — объявление-герой), Hub, Property, Location, DistrictMap (карта районов; геометрия — `tashkent.ts`), ProgressBar; `icons.tsx` — словарь иконок (lucide).
 - Элементы получают `local(сек исходника)` → кадр от начала элемента: так внутренние моменты (`times`, `focus[].at`) попадают в слова с учётом вырезки пауз и ускорения.
 - `camera.ts` — смена плана, наезды, тряска; `Transitions.tsx` — переходы; `Sound.tsx` — звуки и музыка; `cuts.ts` — вырезка пауз и ускорение; `Captions.tsx` — субтитры по образцу; `HookCta.tsx` — хук и концовка; `Speaker.tsx` — видео спикера по кускам; `Stage.tsx` — живой фон; `layout.tsx` — зоны форматов; `theme.ts` — палитры; `motion.ts` — единые кривые движения; `fonts.ts` — шрифты из node_modules (интернет при рендере не нужен).
+- `src/Tour/` — обзор объекта: `schema.ts` (формат плана, `"layout": "tour"`), `timing.ts` (кривые скорости, «ручки» за краями клипа для переходов, раскладка по биту), `ClipLayer.tsx` (клип через `Freeze`, смаз движения), `Tour.tsx` (переходы whip / dissolve / push / wall / cut, цвет, петля, музыка), `Text.tsx` (подписи, хук, финальная плашка), `meta.ts` (длины и частота клипов, сетка ударов). `build-reel` и `check` сами выбирают композицию по `layout`.
 - `scripts/` — ingest, transcribe, estimate-captions, align, new-reel, check, build-reel, finalize, sfx, pack-skill; `scripts/lib/env.mjs` — ffmpeg из Remotion, свой браузер.
 - Новый элемент: тип в `schema.ts` → компонент в `fx/` → ветка в `Overlays.tsx` → звук в `Sound.tsx` → описание в `.claude/agents/reel-editor.md` → `npm run pack-skill`.
 - Новая палитра: запись в `PALETTES` (`theme.ts`) → значение в `palette` (`schema.ts`) → `npm run pack-skill`.

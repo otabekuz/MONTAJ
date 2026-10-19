@@ -5,9 +5,20 @@ import { calculateReelMetadata } from "./Reel/meta";
 import { Matte, type MatteProps } from "./Reel/Matte";
 import { Reel } from "./Reel/Reel";
 import { type ReelProps, reelSchema } from "./Reel/schema";
+import { calculateTourMetadata } from "./Tour/meta";
+import { type TourProps, tourSchema } from "./Tour/schema";
+import { Tour } from "./Tour/Tour";
 
 // Reel — настоящий ролик: план передаётся через --props=reels/<slug>/edit.json.
+// Tour — обзор объекта без речи: план reels/<slug>/edit.json с "layout": "tour".
 // Демо — проверка элементов и палитр без видео (цифры в демо условные).
+
+const tourDefaults: TourProps = {
+  layout: "tour",
+  clips: [{ file: "reels/tour-demo/clip-01.mp4", in: 0, out: 3 }],
+  musicFile: "",
+  grade: "clean",
+};
 
 const reelDefaults: ReelProps = (() => {
   const d = demoFull("uz", "sky");
@@ -24,6 +35,17 @@ export const RemotionRoot: React.FC = () => {
         defaultProps={reelDefaults}
         calculateMetadata={calculateReelMetadata}
         durationInFrames={FPS * 20}
+        fps={FPS}
+        width={W}
+        height={H}
+      />
+      <Composition
+        id="Tour"
+        component={Tour}
+        schema={tourSchema}
+        defaultProps={tourDefaults}
+        calculateMetadata={calculateTourMetadata}
+        durationInFrames={FPS * 10}
         fps={FPS}
         width={W}
         height={H}

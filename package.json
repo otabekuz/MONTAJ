@@ -47,7 +47,10 @@
     "pack-skill": "node scripts/pack-skill.mjs",
     "estimate-captions": "node scripts/estimate-captions.mjs",
     "matte": "node scripts/matte.mjs",
-    "music": "node scripts/music.mjs"
+    "music": "node scripts/music.mjs",
+    "tour-ingest": "node scripts/tour-ingest.mjs",
+    "tour-scan": "node scripts/tour-scan.mjs",
+    "beats": "node scripts/beats.mjs"
   },
   "allowScripts": {
     "esbuild@0.28.1": true
