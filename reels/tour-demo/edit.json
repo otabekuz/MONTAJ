@@ -1,0 +1,28 @@
+{
+  "layout": "tour",
+  "lang": "uz",
+  "palette": "sky",
+  "clips": [
+    { "file": "reels/tour-demo/clip-03.mp4", "in": 0.0, "out": 2.1, "speed": 1, "exit": { "type": "whip", "dir": "left" } },
+    { "file": "reels/tour-demo/clip-01.mp4", "in": 0.5, "out": 6.6, "speed": 1.5, "ramps": [{ "at": 2.4, "dur": 1.2, "speed": 2.4 }], "exit": { "type": "dissolve" } },
+    { "file": "reels/tour-demo/clip-01.mp4", "in": 8.0, "out": 11.0, "speed": 1.1, "exit": { "type": "wall", "dir": "left", "tone": "light" } },
+    { "file": "reels/tour-demo/clip-01.mp4", "in": 17.4, "out": 20.4, "speed": 1.2, "exit": { "type": "push" } },
+    { "file": "reels/tour-demo/clip-01.mp4", "in": 29.2, "out": 32.8, "speed": 1.1, "exit": { "type": "whip", "dir": "left" } },
+    { "file": "reels/tour-demo/clip-04.mp4", "in": 0.5, "out": 5.0, "speed": 1.5, "exit": { "type": "dissolve", "dur": 0.5 } }
+  ],
+  "musicFile": "music/montaj-pulse.webm",
+  "musicStart": 0,
+  "bpm": 96,
+  "beatOffset": 0,
+  "beatSync": true,
+  "beatEvery": 2,
+  "grade": "clean",
+  "sharpen": true,
+  "motionBlur": true,
+  "loop": true,
+  "tags": [
+    { "clip": 2, "at": 8.4, "dur": 1.6, "text": "Oshxona" },
+    { "clip": 4, "at": 29.5, "dur": 1.6, "text": "Yotoqxona", "sub": "panorama oyna" }
+  ],
+  "coverAt": 0.4
+}

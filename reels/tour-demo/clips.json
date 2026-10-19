@@ -1,0 +1,34 @@
+[
+  {
+    "file": "reels/tour-demo/clip-01.mp4",
+    "source": "C.mp4",
+    "duration": 43.07,
+    "fps": 30,
+    "hdr": false,
+    "portrait": true
+  },
+  {
+    "file": "reels/tour-demo/clip-02.mp4",
+    "source": "D.mp4",
+    "duration": 8.97,
+    "fps": 30,
+    "hdr": false,
+    "portrait": true
+  },
+  {
+    "file": "reels/tour-demo/clip-03.mp4",
+    "source": "B.mp4",
+    "duration": 7.83,
+    "fps": 30,
+    "hdr": false,
+    "portrait": true
+  },
+  {
+    "file": "reels/tour-demo/clip-04.mp4",
+    "source": "A.mp4",
+    "duration": 13.31,
+    "fps": 30,
+    "hdr": false,
+    "portrait": true
+  }
+]
