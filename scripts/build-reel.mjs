@@ -8,7 +8,7 @@ import { execFileSync } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 import { bundle } from "@remotion/bundler";
-import { renderMedia, renderStill, selectComposition } from "@remotion/renderer";
+import { makeCancelSignal, renderMedia, renderStill, selectComposition } from "@remotion/renderer";
 import { browserOptions, runFf } from "./lib/env.mjs";
 import { finalize } from "./finalize.mjs";
 
@@ -27,6 +27,18 @@ fs.rmSync(out, { force: true });
 fs.rmSync(cover, { force: true });
 
 const CHUNK = 120; // кадров в куске (4 с)
+
+// ffmpeg Remotion на ПК владельца изредка падает с 0xC0000005 — шаг просто повторяем
+const retryCrash = async (step) => {
+  for (let attempt = 1; ; attempt++) {
+    try {
+      return await step();
+    } catch (e) {
+      if (attempt >= 4 || !/3221225477/.test(String(e?.message))) throw e;
+      console.log(`  ffmpeg упал (0xC0000005), повтор ${attempt}`);
+    }
+  }
+};
 
 // зависший после сбоя браузер рендера не даёт запустить следующий («Failed to launch the browser process»)
 const killBrowsers = () => {
@@ -54,7 +66,14 @@ const renderChunked = async ({ serveUrl, composition, inputProps, retriable }) =
     }
     for (let attempt = 1; ; attempt++) {
       try {
-        await renderMedia({ serveUrl, composition, inputProps, codec: "h264", crf: 18, muted: true, frameRange: range, outputLocation: part, concurrency: attempt > 3 ? 1 : 2, overwrite: true, ...browserOptions() });
+        // кусок дольше 6 минут — зависание (так бывало после сбоя чтения кадра): отменяем и повторяем
+        const { cancelSignal, cancel } = makeCancelSignal();
+        const timer = setTimeout(cancel, 6 * 60 * 1000);
+        try {
+          await renderMedia({ serveUrl, composition, inputProps, codec: "h264", crf: 18, muted: true, frameRange: range, outputLocation: part, concurrency: attempt > 3 ? 1 : 2, overwrite: true, cancelSignal, ...browserOptions() });
+        } finally {
+          clearTimeout(timer);
+        }
         break;
       } catch (e) {
         fs.rmSync(part, { force: true });
@@ -73,18 +92,18 @@ const renderChunked = async ({ serveUrl, composition, inputProps, retriable }) =
     // в Tour звук — только музыка; та же кривая, что в src/Tour/Tour.tsx (0,2 с нарастание, 0,8 с затухание, громкость musicVolume);
     // рендер звука через Remotion на ПК владельца зависал
     const fadeOut = inputProps.loop ? 0.2 : 0.8;
-    await runFf([
+    await retryCrash(() => runFf([
       "-y", "-stream_loop", "-1", "-ss", String(inputProps.musicStart ?? 0), "-i", path.join("public", inputProps.musicFile), "-t", sec.toFixed(3), "-vn",
       // в ffmpeg Remotion нет afade — нарастание и затухание формулой в volume
       "-af", `volume='${inputProps.musicVolume ?? 0.9}*min(1,t/0.2)*min(1,max(0,(${sec.toFixed(3)}-t)/${fadeOut}))':eval=frame,aresample=48000`,
       "-c:a", "aac", "-b:a", "320k", audio,
-    ]);
+    ]));
   } else {
     await renderMedia({ serveUrl, composition, inputProps, codec: "aac", audioBitrate: "320k", outputLocation: audio, overwrite: true, ...browserOptions() });
   }
   const list = path.join("out", `${slug}.parts.txt`);
   fs.writeFileSync(list, parts.map((p) => `file '${path.resolve(p).replace(/\\/g, "/")}'`).join("\n") + "\n");
-  await runFf(["-y", "-f", "concat", "-safe", "0", "-i", list, "-i", audio, "-map", "0:v", "-map", "1:a", "-c:v", "copy", "-c:a", "aac", "-b:a", "320k", "-shortest", "-movflags", "+faststart", tmp]);
+  await retryCrash(() => runFf(["-y", "-f", "concat", "-safe", "0", "-i", list, "-i", audio, "-map", "0:v", "-map", "1:a", "-c:v", "copy", "-c:a", "aac", "-b:a", "320k", "-shortest", "-movflags", "+faststart", tmp]));
   fs.rmSync(audio, { force: true });
   fs.rmSync(list, { force: true });
   // куски удаляются только после полного успеха (обложка тоже может упасть) — повторный запуск их подхватит
@@ -113,7 +132,7 @@ try {
   }
   console.log(`Ролик: ${(composition.durationInFrames / composition.fps).toFixed(1)} с`);
 
-  const retriable = (e) => /No frame found|frame|timeout|Target closed|Request closed|launch the browser|3221225477/i.test(String(e?.message));
+  const retriable = (e) => /No frame found|frame|timeout|Target closed|Request closed|launch the browser|ERR_ABORTED|ERR_EMPTY_RESPONSE|cancel|3221225477/i.test(String(e?.message));
   // --chunks — сразу кусками (когда целиком заведомо не проходит)
   let done = false;
   for (const concurrency of process.argv.includes("--chunks") ? [] : [null, 2]) {
@@ -150,7 +169,7 @@ try {
   const parts = done ? [] : await renderChunked({ serveUrl, composition, inputProps, retriable });
 
   console.log("Громкость −14 LUFS…");
-  await finalize(tmp);
+  await retryCrash(() => finalize(tmp));
   fs.renameSync(tmp, out);
 
   console.log("Обложка…");
