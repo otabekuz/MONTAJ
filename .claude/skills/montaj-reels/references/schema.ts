@@ -45,8 +45,9 @@ export const overlaySchema = z.discriminatedUnion("type", [
   z.object({ type: z.literal("accent"), ...base, text: z.string(), emoji: z.string() }),
   // Заголовок смыслового блока — крупная кинетическая типографика
   z.object({ type: z.literal("title"), ...base, text: z.string(), sub: z.string() }),
-  // B-roll: видео или картинка из public/ (в split — верхняя половина, в full — весь кадр)
-  z.object({ type: z.literal("broll"), ...base, file: z.string() }),
+  // B-roll: видео или картинка из public/ (в split — верхняя половина, в full — весь кадр).
+  // from — с какой секунды файла начинать; cut — жёсткая склейка без появления и наезда (серии быстрых вставок под слова)
+  z.object({ type: z.literal("broll"), ...base, file: z.string(), from: z.number().min(0).optional(), cut: z.boolean().optional() }),
   // Иконки-понятия (1–3): визуальная метафора фразы. icon — ключ из src/Reel/fx/icons.tsx
   z.object({
     type: z.literal("icon"),
@@ -121,6 +122,35 @@ export const overlaySchema = z.discriminatedUnion("type", [
     place: z.string(),
     image: z.string(),
     specs: z.array(z.object({ icon: z.string(), label: z.string() })).max(4),
+  }),
+  // Надпись на поверхности в кадре с перспективой (дверь, стена, фасад) — как «Хороший ремонт это дорого» на двери
+  // (образец F). keys — углы поверхности (доли кадра) в секунды исходника; между ключами надпись едет вместе со стеной.
+  // Ставить на кадр без смены плана (autoFraming/zooms сдвигают видео, надпись — нет). Только реальные факты.
+  z.object({
+    type: z.literal("surface"),
+    ...base,
+    lines: z.array(z.string()).min(1).max(4),
+    style: z.enum(["paint", "light", "metal"]).optional(),
+    keys: z
+      .array(
+        z.object({
+          t: z.number().min(0),
+          tl: z.tuple([z.number(), z.number()]),
+          tr: z.tuple([z.number(), z.number()]),
+          br: z.tuple([z.number(), z.number()]),
+          bl: z.tuple([z.number(), z.number()]),
+        }),
+      )
+      .min(1)
+      .max(8),
+  }),
+  // Рулетка: стрелка между двумя точками кадра (доли) и размер — высота потолка, ширина окна. Только реальные размеры.
+  z.object({
+    type: z.literal("ruler"),
+    ...base,
+    from: z.tuple([z.number(), z.number()]),
+    to: z.tuple([z.number(), z.number()]),
+    label: z.string(),
   }),
   // Слово-гигант «за спиной» (система субтитров layered, уровень 1): огромное слово на уровне головы,
   // человек стоит перед ним (нужен subjectFile — вырезка `npm run matte`). pre — маленькая приставка курсивом

@@ -26,6 +26,7 @@ import { Title } from "./fx/Title";
 import { ToolCard } from "./fx/ToolCard";
 import { Typed } from "./fx/Typed";
 import type { FxProps } from "./fx/common";
+import { RulerFx, SurfaceFx } from "./fx/Space";
 import { type Box, H, W } from "./layout";
 import type { Overlay } from "./schema";
 import type { Palette } from "./theme";
@@ -58,6 +59,8 @@ const renderFx = (o: Overlay, props: Omit<FxProps<never>, "o">) => {
     case "districts": return <DistrictMap o={o} {...props} />;
     case "chip": return <Chip o={o} {...props} />;
     case "giant": return null;
+    case "surface": return <SurfaceFx o={o} {...props} />;
+    case "ruler": return <RulerFx o={o} {...props} />;
     case "tg": return <Telegram o={o} {...props} />;
     case "feed": return <Feed o={o} {...props} />;
     case "notify": return <Notify o={o} {...props} />;
@@ -81,7 +84,7 @@ export const Overlays: React.FC<{
       if (o.type === "giant") return null;
       const { from, frames } = tl.span(o.at, o.dur);
       // slam — всегда весь кадр; broll в full — перебивка на весь кадр
-      const full = o.type === "slam" || o.type === "chip" || (o.type === "broll" && layout === "full");
+      const full = o.type === "slam" || o.type === "chip" || o.type === "surface" || o.type === "ruler" || (o.type === "broll" && layout === "full");
       const box = full ? FULL_FRAME : zone;
       return (
         <Sequence key={i} from={from} durationInFrames={frames} layout="none" name={`${o.type} ${o.at}s`}>

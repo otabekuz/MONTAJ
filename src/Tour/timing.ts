@@ -9,6 +9,7 @@ export const DEFAULT_DUR: Record<TourTransition["type"], number> = {
   whip: 0.3,
   push: 0.36,
   wall: 0.4,
+  inset: 0.9,
 };
 
 /** скорость в самой склейке whip/push (кадр «смазывается», как от резкого поворота) */
@@ -132,7 +133,7 @@ export const layoutClips = (
   loop: boolean,
   beats: number[],
   beatEvery: number,
-  files: { fileDur: number; fps: number }[],
+  files: { fileDur: number; fps: number; stackDur?: number }[],
 ): ResolvedClip[] => {
   const natural = clips.map((c, i) => buildSpeedMap(c, enterOf(clips, i, loop), 1).dur);
   const grid = beats.filter((_, i) => i % beatEvery === 0);

@@ -6,19 +6,23 @@ import { beatGrid, layoutClips } from "./timing";
 
 // Перед рендером: длина и частота кадров каждого клипа, сетка ударов, раскладка клипов по биту.
 export const calculateTourMetadata: CalculateMetadataFunction<TourProps> = async ({ props }) => {
+  const probe = async (file: string) => {
+    try {
+      const m = await parseMedia({
+        src: staticFile(file),
+        fields: { durationInSeconds: true, fps: true },
+        acknowledgeRemotionLicense: true,
+      });
+      return { fileDur: m.durationInSeconds ?? 0, fps: m.fps ?? 30 };
+    } catch {
+      return { fileDur: 0, fps: 30 };
+    }
+  };
   const files = await Promise.all(
-    props.clips.map(async (c) => {
-      try {
-        const m = await parseMedia({
-          src: staticFile(c.file),
-          fields: { durationInSeconds: true, fps: true },
-          acknowledgeRemotionLicense: true,
-        });
-        return { fileDur: m.durationInSeconds ?? 0, fps: m.fps ?? 30 };
-      } catch {
-        return { fileDur: 0, fps: 30 };
-      }
-    }),
+    props.clips.map(async (c) => ({
+      ...(await probe(c.file)),
+      ...(c.stack ? { stackDur: (await probe(c.stack.file)).fileDur } : {}),
+    })),
   );
 
   let trackBeats: number[] | undefined;

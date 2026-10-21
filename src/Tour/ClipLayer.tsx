@@ -19,6 +19,8 @@ export type LayerFx = {
   /** 0..1 — радиальный смаз от центра (пролёт) */
   zoomBlur?: number;
   brightness?: number;
+  /** кадр-«окошко»: масштаб fx.scale применяется ко всему кадру, со скруглением и тенью (переход inset) */
+  card?: boolean;
 };
 
 export const ClipLayer: React.FC<{
@@ -49,7 +51,7 @@ export const ClipLayer: React.FC<{
   const push = 1 + (clip.push ?? 0.02) * progress;
   const fx0 = clip.focus?.x ?? 0.5;
   const fy0 = clip.focus?.y ?? 0.5;
-  const scale = push * (fx.scale ?? 1);
+  const scale = push * (fx.card ? 1 : (fx.scale ?? 1));
 
   const filters = [
     fx.brightness && Math.abs(fx.brightness - 1) > 0.005 ? `brightness(${fx.brightness})` : "",
@@ -77,7 +79,9 @@ export const ClipLayer: React.FC<{
         inset: 0,
         overflow: "hidden",
         opacity: fx.opacity ?? 1,
-        transform: `translate(${fx.x ?? 0}px, ${fx.y ?? 0}px)`,
+        transform: `translate(${fx.x ?? 0}px, ${fx.y ?? 0}px)${fx.card ? ` scale(${fx.scale ?? 1})` : ""}`,
+        borderRadius: fx.card ? 34 : undefined,
+        boxShadow: fx.card ? "0 30px 80px rgba(0,0,0,0.55)" : undefined,
         filter: filters || undefined,
       }}
     >

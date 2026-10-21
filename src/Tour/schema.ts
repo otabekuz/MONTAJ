@@ -11,7 +11,8 @@ export const tourTransitionSchema = z.object({
   // whip     — резкий поворот: кадр улетает вбок с размытием, новый прилетает с той же стороны (референсы B, D);
   // push     — пролёт: наезд в кадр со смазом от центра, новый кадр выплывает из глубины (финал D);
   // wall     — «стена»: мягкая полоса-стена проплывает через кадр и прячет склейку (дверь в D, 6,6 с)
-  type: z.enum(["cut", "dissolve", "whip", "push", "wall"]),
+  // inset    — «окошко»: кадр сжимается в окно с чёрными полями, уезжает вбок, новый въезжает и раскрывается (референс F)
+  type: z.enum(["cut", "dissolve", "whip", "push", "wall", "inset"]),
   // направление движения камеры: куда «уходит» кадр (whip, wall); по умолчанию left (камера поворачивает вправо)
   dir: z.enum(["left", "right", "up", "down"]).optional(),
   // длительность перехода, с (по умолчанию: dissolve 0.4, whip 0.3, push 0.36, wall 0.4, cut 0)
@@ -38,6 +39,37 @@ export const tourClipSchema = z.object({
   focus: z.object({ x: z.number().min(0).max(1), y: z.number().min(0).max(1) }).optional(),
   // переход в следующий клип (у последнего — в начало ролика при loop)
   exit: tourTransitionSchema.optional(),
+  // два кадра стопкой (референс F): снизу второй файл — деталь к общему плану (раковина + смеситель)
+  stack: z.object({ file: z.string(), in: z.number().min(0), speed: z.number().min(0.4).max(4).optional() }).optional(),
+});
+
+// Точка кадра в долях: [x, y], 0..1
+const pt = z.tuple([z.number(), z.number()]);
+
+// Надпись на поверхности в кадре с перспективой (дверь, стена, фасад) — как «Хороший ремонт это дорого» на двери (F)
+// и «36 этажей» на фасаде. keys — углы поверхности (доли кадра) в секунды исходника клипа; между ключами углы
+// двигаются плавно — так надпись «едет» вместе со стеной. Один ключ — надпись стоит (для статичного кадра).
+export const tourSurfaceSchema = z.object({
+  clip: z.number().int().min(0),
+  at: z.number().min(0),
+  dur: z.number().min(0.6).max(8),
+  lines: z.array(z.string()).min(1).max(4),
+  // paint — «напечатано» на светлой поверхности (тёмный, через multiply); light — белый; metal — металл палитры
+  style: z.enum(["paint", "light", "metal"]).optional(),
+  keys: z
+    .array(z.object({ t: z.number().min(0), tl: pt, tr: pt, br: pt, bl: pt }))
+    .min(1)
+    .max(8),
+});
+
+// Рулетка: стрелка между двумя точками кадра и размер (высота потолка, ширина окна) — только реальные размеры владельца
+export const tourRulerSchema = z.object({
+  clip: z.number().int().min(0),
+  at: z.number().min(0),
+  dur: z.number().min(0.8).max(6),
+  from: pt,
+  to: pt,
+  label: z.string(),
 });
 
 // Тонкая подпись комнаты/параметра. Только реальные данные владельца. at — секунда исходника клипа.
@@ -79,6 +111,8 @@ export const tourSchema = z.object({
   // хук-надпись в первые секунды (необязательно; референсы обходятся без текста)
   hook: z.object({ text: z.string(), sub: z.string().optional(), dur: z.number().min(0.8).max(4) }).optional(),
   tags: z.array(tourTagSchema).optional(),
+  surfaces: z.array(tourSurfaceSchema).optional(),
+  rulers: z.array(tourRulerSchema).optional(),
   // финальная плашка: заголовок и 1–3 строки (цена, комнаты, контакт) — только данные владельца
   endCard: z.object({ title: z.string(), lines: z.array(z.string()).max(3), dur: z.number().min(1).max(5) }).optional(),
   // кадр обложки: секунда готового ролика
@@ -93,6 +127,8 @@ export type TourProps = z.infer<typeof tourSchema> & {
 export type TourClip = z.infer<typeof tourClipSchema>;
 export type TourTransition = z.infer<typeof tourTransitionSchema>;
 export type TourTag = z.infer<typeof tourTagSchema>;
+export type TourSurface = z.infer<typeof tourSurfaceSchema>;
+export type TourRuler = z.infer<typeof tourRulerSchema>;
 
 export type ResolvedClip = {
   /** начало клипа в ролике, с */
@@ -105,4 +141,6 @@ export type ResolvedClip = {
   fileDur: number;
   /** частота кадров файла */
   fps: number;
+  /** длина файла второго кадра стопкой (stack), с */
+  stackDur?: number;
 };

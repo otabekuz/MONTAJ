@@ -60,6 +60,8 @@ const overlaySounds = (o: Overlay, from: number, fps: number, frames: number, tl
     case "days": return [...Array.from({ length: 7 }, (_, i) => s(0.15 + i * 0.25, "tick", 0.22)), ...(o.strikeAt !== undefined ? [{ frame: tl.toFrame(o.strikeAt), sound: "impact" as const, volume: 0.3 }] : [])];
     case "chip": return [s(0.05, "pop", 0.3), s(0.3, "tick", 0.2)];
     case "giant": return [s(0, "impact", 0.32), s(0.15, "shine", 0.18)];
+    case "surface": return [s(0.1, "tick", 0.22)];
+    case "ruler": return [s(0, "tick", 0.25), s(0.6, "shine", 0.25)];
   }
 };
 

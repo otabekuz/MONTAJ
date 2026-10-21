@@ -1,20 +1,21 @@
-import { Img, interpolate, OffthreadVideo, staticFile, useCurrentFrame } from "remotion";
+import { Img, interpolate, OffthreadVideo, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import type { OverlayOf } from "../schema";
 import { enter, exit } from "../motion";
 import type { FxProps } from "./common";
 
 const VIDEO = /\.(mp4|mov|webm|m4v)$/i;
 
-// B-roll: видео или фото владельца с медленным наездом (Ken Burns).
+// B-roll: видео или фото владельца с медленным наездом (Ken Burns); cut — встык, как серия быстрых вставок.
 export const Broll: React.FC<FxProps<OverlayOf<"broll">>> = ({ o, total }) => {
   const f = useCurrentFrame();
-  const t = Math.min(enter(f, 0, 8), exit(f, total, 6));
-  const scale = interpolate(f, [0, total], [1.04, 1.14]);
+  const { fps } = useVideoConfig();
+  const t = o.cut ? 1 : Math.min(enter(f, 0, 8), exit(f, total, 6));
+  const scale = o.cut ? interpolate(f, [0, total], [1.0, 1.04]) : interpolate(f, [0, total], [1.04, 1.14]);
   const style: React.CSSProperties = { width: "100%", height: "100%", objectFit: "cover", transform: `scale(${scale})` };
   return (
     <div style={{ position: "absolute", inset: 0, overflow: "hidden", opacity: t, background: "#000" }}>
       {VIDEO.test(o.file) ? (
-        <OffthreadVideo src={staticFile(o.file)} muted style={style} />
+        <OffthreadVideo src={staticFile(o.file)} muted trimBefore={Math.round((o.from ?? 0) * fps)} style={style} />
       ) : (
         <Img src={staticFile(o.file)} style={style} />
       )}

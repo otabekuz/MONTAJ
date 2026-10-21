@@ -5,7 +5,8 @@ import { H, W } from "../Reel/layout";
 import { EASE_IN, EASE_IN_OUT, EASE_OUT } from "../Reel/motion";
 import { getPalette } from "../Reel/theme";
 import { ClipLayer, type LayerFx } from "./ClipLayer";
-import type { TourProps, TourTransition } from "./schema";
+import type { ResolvedClip, TourProps, TourTransition } from "./schema";
+import { Marks } from "./Marks";
 import { EndCard, Hook, Tags } from "./Text";
 import { buildSpeedMap, enterOf, transitionDur } from "./timing";
 
@@ -99,6 +100,26 @@ const transitionFx = (t: TourTransition, p: number): Pair => {
         wall: { ...axis(pos), vertical, tone: t.tone ?? "light", blur: blurId(vertical ? "v" : "h", Math.sin(Math.PI * p) * 30) },
       };
     }
+    case "inset": {
+      // «окошко» (образец F): кадр сжимается в окно на чёрном, уезжает вбок, новый въезжает окном и раскрывается
+      const small = 0.64;
+      const travel = (vertical ? H : W) * 0.9;
+      if (p < 0.35) {
+        const e = ease(p / 0.35);
+        return { a: { scale: 1 - (1 - small) * e, card: true }, b: {}, showA: true, showB: false };
+      }
+      if (p < 0.65) {
+        const e = ease((p - 0.35) / 0.3);
+        return {
+          a: { ...axis(sign * e * travel), scale: small, card: true },
+          b: { ...axis(-sign * (1 - e) * travel), scale: small, card: true },
+          showA: e < 0.999,
+          showB: true,
+        };
+      }
+      const e = ease((p - 0.65) / 0.35);
+      return { a: {}, b: { scale: small + (1 - small) * e, card: e < 0.999 }, showA: false, showB: true };
+    }
     case "cut":
     default:
       return { a: {}, b: {}, showA: p < 0.5, showB: p >= 0.5 };
@@ -146,12 +167,22 @@ export const Tour: React.FC<TourProps> = (props) => {
   const loop = props.loop ?? false;
   const clips = props.clips;
   const resolved = useMemo(
-    () => props.resolved ?? clips.map((_, i) => ({ start: i * 3, dur: 3, scale: 1, fileDur: 0, fps: 30 })),
+    (): ResolvedClip[] => props.resolved ?? clips.map((_, i) => ({ start: i * 3, dur: 3, scale: 1, fileDur: 0, fps: 30 })),
     [props.resolved, clips],
   );
   const maps = useMemo(
     () => clips.map((c, i) => buildSpeedMap(c, enterOf(clips, i, loop), resolved[i].scale)),
     [clips, loop, resolved],
+  );
+  // второй кадр стопкой идёт ровно со своей скоростью от stack.in
+  const stackMaps = useMemo(
+    () =>
+      clips.map((c) => {
+        if (!c.stack) return null;
+        const v = c.stack.speed ?? 1;
+        return { dur: 30, srcAt: (o: number) => c.stack!.in + o * v, speedAt: () => v, toLocal: (t: number) => (t - c.stack!.in) / v };
+      }),
+    [clips],
   );
   const total = durationInFrames / fps;
   const o = f / fps;
@@ -164,7 +195,7 @@ export const Tour: React.FC<TourProps> = (props) => {
     return Math.min(transitionDur(clips[i].exit), resolved[i].dur * 0.8, resolved[next].dur * 0.8);
   };
 
-  const layer = (i: number, local: number, fx?: LayerFx) => (
+  const single = (i: number, local: number, fx?: LayerFx) => (
     <ClipLayer
       key={`c${i}`}
       clip={clips[i]}
@@ -176,11 +207,48 @@ export const Tour: React.FC<TourProps> = (props) => {
       fx={fx}
     />
   );
+  // два кадра стопкой: сверху клип, снизу деталь (stack) — оба движутся; во время перехода стопка двигается целиком
+  const layer = (i: number, local: number, fx?: LayerFx) => {
+    const st = clips[i].stack;
+    if (!st || !stackMaps[i]) return single(i, local, fx);
+    const half = (top: boolean, node: React.ReactNode) => (
+      <div style={{ position: "absolute", left: 0, width: W, top: top ? 0 : H / 2 + 5, height: H / 2 - 5, overflow: "hidden" }}>{node}</div>
+    );
+    const { scale, card, ...rest } = fx ?? {};
+    return (
+      <div
+        key={`st${i}`}
+        style={{
+          position: "absolute",
+          inset: 0,
+          transform: scale && card ? `scale(${scale})` : undefined,
+          borderRadius: card ? 34 : undefined,
+          overflow: "hidden",
+        }}
+      >
+        {half(true, single(i, local, rest))}
+        {half(
+          false,
+          <ClipLayer
+            clip={{ file: st.file, in: st.in, out: st.in + 30, push: clips[i].push }}
+            map={stackMaps[i]!}
+            local={local}
+            fileDur={resolved[i].stackDur ?? 0}
+            srcFps={30}
+            motionBlur={false}
+            fx={rest}
+          />,
+        )}
+      </div>
+    );
+  };
 
   let i = 0;
   while (i < last && o >= resolved[i + 1].start) i++;
 
   let content: React.ReactNode;
+  // клип, который сейчас на экране один (вне перехода): только на нём показываем надписи и рулетки
+  let solo = -1;
   let wall: Pair["wall"];
   const pair = (a: number, aLocal: number, b: number, bLocal: number, t: TourTransition, prog: number) => {
     const fx = transitionFx(t, prog);
@@ -206,6 +274,7 @@ export const Tour: React.FC<TourProps> = (props) => {
     content = pair(last, o - resolved[last].start, 0, o - total, clips[last].exit!, (o - (total - exitD)) / exitD);
   } else {
     content = layer(i, o - resolved[i].start);
+    solo = i;
   }
 
   const grade = GRADE[props.grade ?? "clean"];
@@ -220,6 +289,7 @@ export const Tour: React.FC<TourProps> = (props) => {
       {grade.tint ? <AbsoluteFill style={{ background: grade.tint, mixBlendMode: "soft-light" }} /> : null}
       {wall ? <Wall w={wall} /> : null}
 
+      <Marks surfaces={(props.surfaces ?? []).filter((m) => m.clip === solo)} rulers={(props.rulers ?? []).filter((m) => m.clip === solo)} maps={maps} resolved={resolved} p={p} />
       <Tags tags={props.tags ?? []} clips={clips} maps={maps} resolved={resolved} p={p} />
       {props.hook ? <Hook hook={props.hook} p={p} /> : null}
       {props.endCard ? <EndCard card={props.endCard} end={total - loopTail} p={p} /> : null}
