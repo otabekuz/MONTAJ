@@ -127,7 +127,7 @@ export const EndCard: React.FC<{ card: NonNullable<TourProps["endCard"]>; end: n
   const { i, o } = appear(t, card.dur, 0.6, 0.3);
   return (
     <div style={{ position: "absolute", inset: 0, opacity: o }}>
-      <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: 980, background: `linear-gradient(0deg, rgba(0,0,0,${0.62 * i}) 30%, transparent)` }} />
+      <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: 980, background: `linear-gradient(0deg, rgba(0,0,0,${0.7 * i}) 50%, transparent)` }} />
       <div style={{ position: "absolute", left: 72, right: 160, bottom: 420, transform: `translateY(${(1 - i) * 24}px)` }}>
         <div style={{ width: 72 * i, height: 2, background: p.accent, marginBottom: 22, borderRadius: 2 }} />
         <div style={{ fontFamily: FONT, fontWeight: 600, fontSize: 64, lineHeight: 1.05, color: "#fff", textShadow: SHADOW }}>{card.title}</div>

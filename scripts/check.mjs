@@ -65,7 +65,16 @@ for (const arg of frameArgs) {
         : parseInt(arg, 10),
   );
   const output = path.join("out", `${target}-check-${palette ? `${palette}-` : ""}${frame}.png`);
-  await renderStill({ serveUrl, composition, frame, output, inputProps, scale: 0.5, puppeteerInstance });
+  // ffprobe/ffmpeg Remotion на этом ПК изредка падает с 0xC0000005 — кадр повторяем, как build-reel
+  for (let attempt = 1; ; attempt++) {
+    try {
+      await renderStill({ serveUrl, composition, frame, output, inputProps, scale: 0.5, puppeteerInstance });
+      break;
+    } catch (e) {
+      if (attempt >= 4) throw e;
+      console.log(`  кадр ${frame}: сбой (${String(e.message).split("\n")[0].slice(0, 80)}…), повтор ${attempt}`);
+    }
+  }
   console.log(`  ${output}`);
 }
 await puppeteerInstance.close({ silent: true });
