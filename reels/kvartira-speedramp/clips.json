@@ -1,0 +1,122 @@
+[
+  {
+    "file": "reels/kvartira-speedramp/clip-01.mp4",
+    "source": "01-w1.mp4",
+    "duration": 5,
+    "fps": 30,
+    "hdr": false,
+    "portrait": true
+  },
+  {
+    "file": "reels/kvartira-speedramp/clip-02.mp4",
+    "source": "02-w2.mp4",
+    "duration": 5,
+    "fps": 30,
+    "hdr": false,
+    "portrait": true
+  },
+  {
+    "file": "reels/kvartira-speedramp/clip-03.mp4",
+    "source": "03-ai2.mp4",
+    "duration": 4,
+    "fps": 30,
+    "hdr": false,
+    "portrait": true
+  },
+  {
+    "file": "reels/kvartira-speedramp/clip-04.mp4",
+    "source": "04-IMG_2247.MOV",
+    "duration": 5.67,
+    "fps": 30,
+    "hdr": false,
+    "portrait": true
+  },
+  {
+    "file": "reels/kvartira-speedramp/clip-05.mp4",
+    "source": "05-IMG_2251.MOV",
+    "duration": 2.1,
+    "fps": 30,
+    "hdr": false,
+    "portrait": true
+  },
+  {
+    "file": "reels/kvartira-speedramp/clip-06.mp4",
+    "source": "06-IMG_2249.MOV",
+    "duration": 10,
+    "fps": 30,
+    "hdr": false,
+    "portrait": true
+  },
+  {
+    "file": "reels/kvartira-speedramp/clip-07.mp4",
+    "source": "07-w4.mp4",
+    "duration": 5,
+    "fps": 30,
+    "hdr": false,
+    "portrait": true
+  },
+  {
+    "file": "reels/kvartira-speedramp/clip-08.mp4",
+    "source": "08-w5.mp4",
+    "duration": 5,
+    "fps": 30,
+    "hdr": false,
+    "portrait": true
+  },
+  {
+    "file": "reels/kvartira-speedramp/clip-09.mp4",
+    "source": "09-ai3b.mp4",
+    "duration": 4,
+    "fps": 30,
+    "hdr": false,
+    "portrait": true
+  },
+  {
+    "file": "reels/kvartira-speedramp/clip-10.mp4",
+    "source": "10-w6.mp4",
+    "duration": 5,
+    "fps": 30,
+    "hdr": false,
+    "portrait": true
+  },
+  {
+    "file": "reels/kvartira-speedramp/clip-11.mp4",
+    "source": "11-w7.mp4",
+    "duration": 5,
+    "fps": 30,
+    "hdr": false,
+    "portrait": true
+  },
+  {
+    "file": "reels/kvartira-speedramp/clip-12.mp4",
+    "source": "12-IMG_2253.MOV",
+    "duration": 6.6,
+    "fps": 30,
+    "hdr": false,
+    "portrait": true
+  },
+  {
+    "file": "reels/kvartira-speedramp/clip-13.mp4",
+    "source": "13-w8.mp4",
+    "duration": 5,
+    "fps": 30,
+    "hdr": false,
+    "portrait": true
+  },
+  {
+    "file": "reels/kvartira-speedramp/clip-14.mp4",
+    "source": "14-w9.mp4",
+    "duration": 5,
+    "fps": 30,
+    "hdr": false,
+    "portrait": true
+  },
+  {
+    "file": "reels/kvartira-speedramp/clip-15.mp4",
+    "source": "15-door.mp4",
+    "duration": 6,
+    "fps": 30,
+    "hdr": false,
+    "portrait": true
+  }
+]

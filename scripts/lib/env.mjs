@@ -18,8 +18,19 @@ export const ffmpegPath = (tool = "ffmpeg") => {
   return { bin, dir: path.join(dir, pkg) };
 };
 
-/** Запуск ffmpeg/ffprobe; возвращает stdout+stderr, при ошибке бросает исключение */
-export const runFf = (args, tool = "ffmpeg") =>
+/** Запуск ffmpeg/ffprobe; возвращает stdout+stderr, при ошибке бросает исключение.
+ *  На ПК владельца (360 Total Security) ffmpeg/ffprobe изредка падают с 0xC0000005 — такой запуск повторяется до 4 раз. */
+export const runFf = async (args, tool = "ffmpeg") => {
+  for (let attempt = 1; ; attempt++) {
+    try {
+      return await runFfOnce(args, tool);
+    } catch (e) {
+      if (attempt >= 4 || !/3221225477/.test(String(e?.message))) throw e;
+    }
+  }
+};
+
+const runFfOnce = (args, tool) =>
   new Promise((resolve, reject) => {
     const { bin, dir } = ffmpegPath(tool);
     const env = { ...process.env };

@@ -27,6 +27,73 @@ fs.rmSync(out, { force: true });
 fs.rmSync(cover, { force: true });
 
 const CHUNK = 120; // кадров в куске (4 с)
+const SR = 48000;
+
+// 16-битный стерео WAV → Int16Array (ищем блок data: ffmpeg пишет перед ним LIST)
+const readWav = (file) => {
+  const b = fs.readFileSync(file);
+  let p = 12;
+  while (p + 8 <= b.length) {
+    const id = b.toString("ascii", p, p + 4);
+    const size = b.readUInt32LE(p + 4);
+    if (id === "data") return new Int16Array(b.buffer.slice(b.byteOffset + p + 8, b.byteOffset + p + 8 + Math.min(size, b.length - p - 8)));
+    p += 8 + size + (size % 2);
+  }
+  throw new Error(`В ${file} нет звука`);
+};
+
+const writeWav = (file, samples) => {
+  const data = Buffer.from(samples.buffer, samples.byteOffset, samples.byteLength);
+  const h = Buffer.alloc(44);
+  h.write("RIFF", 0);
+  h.writeUInt32LE(36 + data.length, 4);
+  h.write("WAVE", 8);
+  h.write("fmt ", 12);
+  h.writeUInt32LE(16, 16);
+  h.writeUInt16LE(1, 20);
+  h.writeUInt16LE(2, 22);
+  h.writeUInt32LE(SR, 24);
+  h.writeUInt32LE(SR * 4, 28);
+  h.writeUInt16LE(4, 32);
+  h.writeUInt16LE(16, 34);
+  h.write("data", 36);
+  h.writeUInt32LE(data.length, 40);
+  fs.writeFileSync(file, Buffer.concat([h, data]));
+};
+
+// музыка × громкость × нарастание 0,2 с × затухание в конце + звуки sfx (те же правила, что в src/Tour/Tour.tsx)
+const mixTourAudio = ({ musicWav, out, sec, inputProps, starts }) => {
+  const music = readWav(musicWav);
+  const n = Math.round(sec * SR);
+  const mix = new Float32Array(n * 2);
+  const vol = inputProps.musicVolume ?? 0.9;
+  const fadeOut = inputProps.loop ? 0.2 : 0.8;
+  const tail = inputProps.loop ? 0.6 : 0;
+  for (let i = 0; i < n; i++) {
+    const t = i / SR;
+    const fin = Math.min(1, t / 0.2);
+    const fout = t > sec - fadeOut ? tail + (1 - tail) * Math.max(0, (sec - t) / fadeOut) : 1;
+    const g = vol * fin * fout;
+    mix[i * 2] = ((music[i * 2] ?? 0) / 32768) * g;
+    mix[i * 2 + 1] = ((music[i * 2 + 1] ?? 0) / 32768) * g;
+  }
+  for (const s of inputProps.sfx ?? []) {
+    if (starts[s.clip] === undefined) continue;
+    const fx = readWav(path.join("public", "sfx", `${s.sound}.wav`));
+    const at = Math.round((starts[s.clip] + s.offset) * SR);
+    const v = s.volume ?? 0.5;
+    for (let j = 0; j < fx.length / 2; j++) {
+      const i = at + j;
+      if (i < 0 || i >= n) continue;
+      mix[i * 2] += (fx[j * 2] / 32768) * v;
+      mix[i * 2 + 1] += (fx[j * 2 + 1] / 32768) * v;
+    }
+  }
+  const pcm = new Int16Array(n * 2);
+  // мягкий ограничитель: громкость потом всё равно выравнивает finalize (−14 LUFS)
+  for (let i = 0; i < pcm.length; i++) pcm[i] = Math.round(Math.tanh(mix[i]) * 32767);
+  writeWav(out, pcm);
+};
 
 // ffmpeg Remotion на ПК владельца изредка падает с 0xC0000005 — шаг просто повторяем
 const retryCrash = async (step) => {
@@ -50,7 +117,8 @@ const killBrowsers = () => {
   }
 };
 
-const renderChunked = async ({ serveUrl, composition, inputProps, retriable }) => {
+// composition/inputProps — для видео кусков (у Tour без звука), audioProps/starts — исходный план для сведения звука
+const renderChunked = async ({ serveUrl, composition, inputProps, audioProps = inputProps, starts, retriable }) => {
   const total = composition.durationInFrames;
   const count = Math.ceil(total / CHUNK);
   // кусок с прошлого запуска годится, если он новее плана монтажа
@@ -88,16 +156,19 @@ const renderChunked = async ({ serveUrl, composition, inputProps, retriable }) =
   // .mp4: в урезанном ffmpeg Remotion нет муксера m4a
   const audio = path.join("out", `${slug}.audio.mp4`);
   const sec = total / composition.fps;
-  if (inputProps.layout === "tour") {
-    // в Tour звук — только музыка; та же кривая, что в src/Tour/Tour.tsx (0,2 с нарастание, 0,8 с затухание, громкость musicVolume);
-    // рендер звука через Remotion на ПК владельца зависал
-    const fadeOut = inputProps.loop ? 0.2 : 0.8;
+  if (audioProps.layout === "tour") {
+    // рендер звука через Remotion на ПК владельца зависал, а в его ffmpeg нет afade/amix — поэтому звук Tour сводится здесь:
+    // ffmpeg только раскодирует музыку в WAV, громкость, нарастание/затухание (как в src/Tour/Tour.tsx) и звуки sfx — в JS
+    const musicWav = path.join("out", `${slug}.music.wav`);
     await retryCrash(() => runFf([
-      "-y", "-stream_loop", "-1", "-ss", String(inputProps.musicStart ?? 0), "-i", path.join("public", inputProps.musicFile), "-t", sec.toFixed(3), "-vn",
-      // в ffmpeg Remotion нет afade — нарастание и затухание формулой в volume
-      "-af", `volume='${inputProps.musicVolume ?? 0.9}*min(1,t/0.2)*min(1,max(0,(${sec.toFixed(3)}-t)/${fadeOut}))':eval=frame,aresample=48000`,
-      "-c:a", "aac", "-b:a", "320k", audio,
+      "-y", "-stream_loop", "-1", "-ss", String(audioProps.musicStart ?? 0), "-i", path.join("public", audioProps.musicFile),
+      "-t", sec.toFixed(3), "-vn", "-af", "aresample=48000", "-c:a", "pcm_s16le", "-f", "wav", musicWav,
     ]));
+    const mixed = path.join("out", `${slug}.mix.wav`);
+    mixTourAudio({ musicWav, out: mixed, sec, inputProps: audioProps, starts: starts ?? composition.props.resolved.map((r) => r.start) });
+    fs.rmSync(musicWav, { force: true });
+    await retryCrash(() => runFf(["-y", "-i", mixed, "-c:a", "aac", "-b:a", "320k", audio]));
+    fs.rmSync(mixed, { force: true });
   } else {
     await renderMedia({ serveUrl, composition, inputProps, codec: "aac", audioBitrate: "320k", outputLocation: audio, overwrite: true, ...browserOptions() });
   }
@@ -166,7 +237,14 @@ try {
   }
   // Кусками: на ПК владельца (360 Total Security) чтение кадров Remotion падает случайно (0xC0000005, «No frame found»),
   // и один сбой перечёркивал весь рендер. Здесь повторяется только упавший кусок; звук рендерится отдельно и подкладывается при склейке.
-  const parts = done ? [] : await renderChunked({ serveUrl, composition, inputProps, retriable });
+  // куски рендерятся без звука, а звук сводится отдельно — поэтому из композиции для кусков убираем музыку и звуки:
+  // иначе Remotion в каждом куске скачивает и проверяет их ffprobe, а он на ПК владельца падает (0xC0000005)
+  let parts = [];
+  if (!done) {
+    const silentProps = tour ? { ...inputProps, musicFile: "", sfx: [] } : inputProps;
+    const silent = tour ? await selectComposition({ serveUrl, id: "Tour", inputProps: silentProps, ...browserOptions() }) : composition;
+    parts = await renderChunked({ serveUrl, composition: silent, inputProps: silentProps, audioProps: inputProps, starts: composition.props.resolved?.map((r) => r.start), retriable });
+  }
 
   console.log("Громкость −14 LUFS…");
   await retryCrash(() => finalize(tmp));

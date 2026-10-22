@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { AbsoluteFill, Audio, interpolate, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
+import { AbsoluteFill, Audio, interpolate, Sequence, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import "../Reel/fonts";
 import { H, W } from "../Reel/layout";
 import { EASE_IN, EASE_IN_OUT, EASE_OUT } from "../Reel/motion";
@@ -309,6 +309,15 @@ export const Tour: React.FC<TourProps> = (props) => {
           }}
         />
       ) : null}
+      {(props.sfx ?? []).map((s, k) => {
+        const at = resolved[s.clip] ? resolved[s.clip].start + s.offset : -1;
+        if (at < 0) return null;
+        return (
+          <Sequence key={`sfx${k}`} from={Math.round(at * fps)}>
+            <Audio src={staticFile(`sfx/${s.sound}.wav`)} volume={s.volume ?? 0.5} />
+          </Sequence>
+        );
+      })}
     </AbsoluteFill>
   );
 };

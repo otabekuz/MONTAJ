@@ -118,6 +118,18 @@ export const tourSchema = z.object({
   endCard: z.object({ title: z.string(), lines: z.array(z.string()).max(3), dur: z.number().min(1).max(5) }).optional(),
   // кадр обложки: секунда готового ролика
   coverAt: z.number().min(0).optional(),
+  // звуки (свои, public/sfx, без whoosh): clip — номер клипа, offset — секунды от начала клипа В РОЛИКЕ
+  // (можно отрицательные: нарастание начинается до склейки). Удар — хук и кульминация, нарастание — перед ней, блик — люстры и надписи
+  sfx: z
+    .array(
+      z.object({
+        clip: z.number().int().min(0),
+        offset: z.number(),
+        sound: z.enum(["impact", "riser", "shine", "glitch", "pop", "tick"]),
+        volume: z.number().min(0).max(1).optional(),
+      }),
+    )
+    .optional(),
 });
 
 export type TourProps = z.infer<typeof tourSchema> & {
